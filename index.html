@@ -1019,7 +1019,7 @@
     font-family: 'Share Tech Mono', monospace;
   }
 
-  .weather-icon { font-size: 48px; line-height: 1; }
+  .weather-icon { font-size: 48px; line-height: 1; font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif; }
 
   .weather-stats {
     display: grid; grid-template-columns: 1fr 1fr 1fr;
@@ -2427,7 +2427,7 @@
           const intensity = f.brightness > 350 ? 'var(--pink)' : f.brightness > 320 ? 'var(--orange)' : 'var(--yellow)';
           return `<div class="fire-item">
             <div class="fire-dot" style="background:${intensity};box-shadow:0 0 6px ${intensity}"></div>
-            <div class="fire-name">${f.lat.toFixed(2)}Â°N, ${Math.abs(f.lon).toFixed(2)}Â°W</div>
+            <div class="fire-name">${f.lat.toFixed(2)}°N, ${Math.abs(f.lon).toFixed(2)}°W</div>
             <div class="fire-acres">${Math.round(f.brightness)}K</div>
           </div>`;
         }).join('')}
@@ -2516,7 +2516,7 @@
       document.getElementById('weather-content').innerHTML = `
         <div class="weather-main">
           <div>
-            <div class="weather-temp">${Math.round(c.temperature_2m)}<sup>Â°F</sup></div>
+            <div class="weather-temp">${Math.round(c.temperature_2m)}<sup>°F</sup></div>
             <div class="weather-desc">${desc}</div>
             <div class="weather-desc" style="color:var(--dim);margin-top:2px;font-size:10px;">${city}</div>
           </div>
@@ -2524,7 +2524,7 @@
         </div>
         <div class="weather-stats">
           <div class="weather-stat">
-            <span class="weather-stat-val">${Math.round(c.apparent_temperature)}Â°</span>
+            <span class="weather-stat-val">${Math.round(c.apparent_temperature)}°</span>
             <div class="weather-stat-label">Feels like</div>
           </div>
           <div class="weather-stat">
@@ -2624,11 +2624,11 @@
       document.getElementById('iss-content').innerHTML = `
         <div class="iss-coords">
           <div class="iss-coord">
-            <span class="iss-coord-val">${lat}Â°</span>
+            <span class="iss-coord-val">${lat}°</span>
             <div class="iss-coord-label">Latitude</div>
           </div>
           <div class="iss-coord">
-            <span class="iss-coord-val">${lon}Â°</span>
+            <span class="iss-coord-val">${lon}°</span>
             <div class="iss-coord-label">Longitude</div>
           </div>
           <div class="iss-coord">
