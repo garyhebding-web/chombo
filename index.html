@@ -2935,7 +2935,7 @@
   function loadSettingsPanel() {
     const city = localStorage.getItem('chombo-city') || '';
     document.getElementById('settings-city').value = city;
-    applyPissMode(localStorage.getItem('chombo-piss') === '1');
+    updatePissUI(localStorage.getItem('chombo-piss') === '1');
   }
   function saveCity() {
     const val = document.getElementById('settings-city').value.trim();
@@ -2947,17 +2947,19 @@
   function togglePissMode() {
     const next = localStorage.getItem('chombo-piss') !== '1';
     localStorage.setItem('chombo-piss', next ? '1' : '0');
-    applyPissMode(next);
+    document.body.classList.toggle('piss-mode', next);
+    updatePissUI(next);
   }
   function applyPissMode(on) {
     document.body.classList.toggle('piss-mode', on);
+    updatePissUI(on);
+  }
+  function updatePissUI(on) {
     const track = document.getElementById('piss-track');
     const label = document.getElementById('piss-label');
     const sub   = document.getElementById('piss-sublabel');
-    if (!track) return;
-    track.classList.toggle('on', on);
-    label.textContent = on ? 'ON' : 'OFF';
-    label.className = 'piss-label ' + (on ? 'on' : 'off');
+    if (track) track.classList.toggle('on', on);
+    if (label) { label.textContent = on ? 'ON' : 'OFF'; label.className = 'piss-label ' + (on ? 'on' : 'off'); }
     if (sub) sub.textContent = on ? '\uD83D\uDFE1 Engaged' : 'Golden hour aesthetic';
   }
 
