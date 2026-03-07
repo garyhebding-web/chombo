@@ -1389,6 +1389,31 @@
       repeating-linear-gradient(90deg, rgba(200,160,0,0.12) 0px, rgba(200,160,0,0.12) 1px, transparent 1px, transparent 50px),
       repeating-linear-gradient(0deg,  rgba(200,160,0,0.10) 0px, rgba(200,160,0,0.10) 1px, transparent 1px, transparent 35px);
   }
+
+  .chombin-btn {
+    display: block; width: 100%; margin-top: 32px;
+    background: linear-gradient(90deg, #c8a000, #a07800, #c8a000);
+    background-size: 200% auto;
+    animation: chombin-shimmer 2s linear infinite;
+    color: #050510; border: 2px solid #c8a000;
+    border-radius: 10px; padding: 16px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px; font-weight: 900;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; text-decoration: none;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(200,160,0,0.5), 0 0 40px rgba(200,160,0,0.2), inset 0 0 20px rgba(0,0,0,0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
+    touch-action: manipulation;
+  }
+  .chombin-btn::before { content: '\u2622'; margin-right: 10px; font-size: 16px; }
+  .chombin-btn::after  { content: '\u2622'; margin-left: 10px; font-size: 16px; }
+  .chombin-btn:active { transform: scale(0.96); box-shadow: 0 0 30px rgba(200,160,0,0.8); }
+  @keyframes chombin-shimmer {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
 </style>
 </head>
 <body>
@@ -1628,7 +1653,9 @@
         </div>
       </div>
 
-    </div><!-- /main-col -->
+    
+        <a class="chombin-btn" href="https://www.tiktok.com/@gregglz/video/6912289709247057158" target="_blank" rel="noopener">It's chombin' time</a>
+      </div><!-- /main-col -->
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
