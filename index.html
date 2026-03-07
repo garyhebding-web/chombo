@@ -1328,6 +1328,67 @@
     color: var(--dim); font-size: 11px;
     letter-spacing: 0.15em; text-transform: uppercase;
   }
+
+  /* ── SETTINGS ── */
+  .settings-section { margin-bottom: 24px; }
+  .settings-section-title {
+    font-family: 'Orbitron', sans-serif; font-size: 9px;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--cyan); text-shadow: var(--glow-cyan);
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,245,255,0.15);
+  }
+  .settings-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid rgba(90,90,138,0.15); gap: 12px;
+  }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-label { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 600; color: var(--white); }
+  .settings-sublabel { font-size: 10px; color: var(--dim); font-family: 'Share Tech Mono', monospace; margin-top: 2px; }
+  .settings-input {
+    background: rgba(5,5,15,0.8); border: 1px solid rgba(0,245,255,0.25);
+    border-radius: 6px; padding: 8px 12px; font-family: 'Share Tech Mono', monospace;
+    font-size: 13px; color: var(--cyan2); outline: none; width: 140px;
+    caret-color: var(--cyan); transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none;
+  }
+  .settings-input:focus { border-color: rgba(0,245,255,0.6); box-shadow: var(--glow-cyan); }
+  .settings-save-btn {
+    background: linear-gradient(90deg, var(--pink), var(--purple));
+    color: white; border: none; border-radius: 6px; padding: 8px 14px;
+    font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+    transition: all 0.2s; touch-action: manipulation; white-space: nowrap; min-height: 36px;
+  }
+  .settings-save-btn:active { transform: scale(0.95); }
+  .piss-toggle-track {
+    width: 48px; height: 26px; border-radius: 13px;
+    background: rgba(5,5,15,0.8); border: 1px solid rgba(90,90,138,0.4);
+    position: relative; cursor: pointer; transition: all 0.3s; flex-shrink: 0;
+  }
+  .piss-toggle-track.on { background: rgba(200,160,0,0.25); border-color: rgba(200,160,0,0.6); box-shadow: 0 0 10px rgba(200,160,0,0.3); }
+  .piss-toggle-knob {
+    position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+    border-radius: 50%; background: var(--dim); transition: all 0.3s;
+  }
+  .piss-toggle-track.on .piss-toggle-knob { transform: translateX(22px); background: #c8a000; box-shadow: 0 0 8px rgba(200,160,0,0.8); }
+  .piss-label { font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; }
+  .piss-label.on  { color: #c8a000; text-shadow: 0 0 8px rgba(200,160,0,0.6); }
+  .piss-label.off { color: var(--dim); }
+  body.piss-mode {
+    --pink:   #c8a000; --cyan:   #d4b800; --cyan2:  #e8d060;
+    --purple: #9a7800; --violet: #b89000; --yellow: #ffe566; --orange: #c87800;
+    --glow-pink:   0 0 8px #c8a000, 0 0 20px #c8a00055, 0 0 40px #c8a00020;
+    --glow-cyan:   0 0 8px #d4b800, 0 0 20px #d4b80055, 0 0 40px #d4b80020;
+    --glow-purple: 0 0 6px #9a7800, 0 0 16px #9a780044;
+    --glow-yellow: 0 0 8px #ffe566, 0 0 20px #ffe56644;
+    --glow-orange: 0 0 8px #c87800, 0 0 20px #c8780044;
+  }
+  body.piss-mode .bg-sun { background: linear-gradient(to bottom, #ffe135 0%, #c8a000 50%, #8a6000 100%); box-shadow: 0 0 50px rgba(200,160,0,0.6), 0 0 100px rgba(180,120,0,0.3); }
+  body.piss-mode .bg-grid {
+    background: linear-gradient(to bottom, transparent 0%, rgba(180,140,0,0.06) 100%),
+      repeating-linear-gradient(90deg, rgba(200,160,0,0.12) 0px, rgba(200,160,0,0.12) 1px, transparent 1px, transparent 50px),
+      repeating-linear-gradient(0deg,  rgba(200,160,0,0.10) 0px, rgba(200,160,0,0.10) 1px, transparent 1px, transparent 35px);
+  }
 </style>
 </head>
 <body>
@@ -1551,11 +1612,48 @@
         <svg viewBox="0 0 20 20"><rect x="2" y="3" width="16" height="11" rx="1.5"/><path d="M7 17h6M10 14v3"/><path d="M5 7.5h2M9 7.5h6M5 10h4M11 10h4"/></svg>
         SIT REP
       </button>
+      <button class="nav-tab" id="tab-settings" onclick="switchTab('settings')">
+        <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="3"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42"/></svg>
+        SETTINGS
+      </button>
     </nav>
 
   </div><!-- /app -->
 </div><!-- /screen-app -->
 
+
+      <!-- SETTINGS PANEL -->
+      <div class="panel" id="panel-settings">
+        <div class="panel-title">// SETTINGS //</div>
+        <div class="settings-section">
+          <div class="settings-section-title">Location</div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Weather City</div>
+              <div class="settings-sublabel">Used for weather &amp; air quality</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input class="settings-input" id="settings-city" type="text" placeholder="Chicago" maxlength="50">
+              <button class="settings-save-btn" onclick="saveCity()">SAVE</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-section-title">Appearance</div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Piss Mode</div>
+              <div class="settings-sublabel" id="piss-sublabel">Golden hour aesthetic</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="piss-toggle-track" id="piss-track" onclick="togglePissMode()">
+                <div class="piss-toggle-knob"></div>
+              </div>
+              <span class="piss-label off" id="piss-label">OFF</span>
+            </div>
+          </div>
+        </div>
+      </div>
 <!-- THREAD SCREEN -->
 <div class="thread-screen" id="thread-screen">
   <div class="thread-topbar">
@@ -1758,6 +1856,7 @@
 
     await loadFeed();
     subscribeRealtime();
+    if (localStorage.getItem('chombo-piss') === '1') applyPissMode(true);
     switchTab('feed');
   }
 
@@ -1978,13 +2077,15 @@
 
   // ââ TABS ââ
   function switchTab(tab) {
-    ['feed','stats','monitor'].forEach(t => {
+    ['feed','stats','monitor','settings'].forEach(t => {
       document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
     });
     document.getElementById('panel-feed').style.display = tab === 'feed' ? 'block' : 'none';
     document.getElementById('panel-feed').style.flex    = tab === 'feed' ? '1' : '';
     document.getElementById('panel-stats').classList.toggle('active', tab === 'stats');
     document.getElementById('panel-monitor').classList.toggle('active', tab === 'monitor');
+    document.getElementById('panel-settings').classList.toggle('active', tab === 'settings');
+    if (tab === 'settings') loadSettingsPanel();
     document.getElementById('fab').style.display = tab === 'feed' ? 'flex' : 'none';
     if (tab === 'feed') {
       lastSeenAt = new Date();
@@ -2831,6 +2932,35 @@
 
   // ââ KICK IT OFF ââ
   boot();
+  function loadSettingsPanel() {
+    const city = localStorage.getItem('chombo-city') || '';
+    document.getElementById('settings-city').value = city;
+    applyPissMode(localStorage.getItem('chombo-piss') === '1');
+  }
+  function saveCity() {
+    const val = document.getElementById('settings-city').value.trim();
+    if (!val) { showToast('Enter a city name'); return; }
+    localStorage.setItem('chombo-city', val);
+    monitorLoaded = false;
+    showToast('\u2713 Location saved — refresh Sit Rep to apply');
+  }
+  function togglePissMode() {
+    const next = localStorage.getItem('chombo-piss') !== '1';
+    localStorage.setItem('chombo-piss', next ? '1' : '0');
+    applyPissMode(next);
+  }
+  function applyPissMode(on) {
+    document.body.classList.toggle('piss-mode', on);
+    const track = document.getElementById('piss-track');
+    const label = document.getElementById('piss-label');
+    const sub   = document.getElementById('piss-sublabel');
+    if (!track) return;
+    track.classList.toggle('on', on);
+    label.textContent = on ? 'ON' : 'OFF';
+    label.className = 'piss-label ' + (on ? 'on' : 'off');
+    if (sub) sub.textContent = on ? '\uD83D\uDFE1 Engaged' : 'Golden hour aesthetic';
+  }
+
 </script>
 </body>
 </html>
