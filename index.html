@@ -1443,7 +1443,7 @@
   }
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js" onload="initPissTank()"></script>
 </head>
 <body>
 
@@ -3031,8 +3031,7 @@
   // ISS Urine Tank via NASA Lightstreamer
   function initPissTank() {
     if (typeof LightstreamerClient === 'undefined') {
-      window.addEventListener('load', initPissTank);
-      return;
+      return; // onload on script tag handles this
     }
     var lsClient = new LightstreamerClient('https://push.lightstreamer.com', 'ISSLIVE');
     lsClient.connect();
@@ -3064,7 +3063,7 @@
     });
     lsClient.subscribe(sub);
   }
-  initPissTank();
+  // initPissTank() called via script onload
 </script>
 </body>
 </html>
