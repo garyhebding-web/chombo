@@ -1443,7 +1443,7 @@
   }
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js" onload="initPissTank()"></script>
 </head>
 <body>
 
@@ -3085,6 +3085,39 @@
   });
   observer.observe(document.body, { childList: true, subtree: true });
 })();
+
+  function initPissTank() {
+    if (typeof LightstreamerClient === 'undefined') { return; }
+    var lsClient = new LightstreamerClient('https://push.lightstreamer.com', 'ISSLIVE');
+    lsClient.connect();
+    var sub = new Subscription('MERGE', ['NODE3000005'], ['Value']);
+    sub.setRequestedSnapshot('yes');
+    sub.addListener({
+      onItemUpdate: function(obj) {
+        var val = parseFloat(obj.getValue('Value'));
+        if (!isNaN(val)) {
+          var pct = Math.min(100, Math.max(0, val));
+          var fillEl = document.getElementById('iss-piss-fill');
+          var pctEl  = document.getElementById('iss-piss-pct');
+          if (fillEl) fillEl.style.width = pct + '%';
+          if (pctEl)  pctEl.textContent = pct.toFixed(1) + '%';
+        }
+      },
+      onSubscriptionError: function() {
+        var el = document.getElementById('iss-piss-pct');
+        if (el) el.textContent = 'no signal';
+      }
+    });
+    lsClient.addListener({
+      onStatusChange: function(status) {
+        if (status.indexOf('DISCONNECTED') === 0 || status === 'STALLED') {
+          var el = document.getElementById('iss-piss-pct');
+          if (el) el.textContent = 'no signal';
+        }
+      }
+    });
+    lsClient.subscribe(sub);
+  }
 </script>
 </body>
 </html>
