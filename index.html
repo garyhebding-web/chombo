@@ -1443,7 +1443,7 @@
   }
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js" onload="initPissTank()"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js"></script>
 </head>
 <body>
 
@@ -3028,42 +3028,63 @@
 
 
 
-  // ISS Urine Tank via NASA Lightstreamer
-  function initPissTank() {
-    if (typeof LightstreamerClient === 'undefined') {
-      return; // onload on script tag handles this
-    }
-    var lsClient = new LightstreamerClient('https://push.lightstreamer.com', 'ISSLIVE');
-    lsClient.connect();
+
+</script>
+
+<script>
+(function() {
+  var _lsClient = null;
+  var _connected = false;
+
+  function connectPissTank() {
+    if (_connected) return;
+    var fillEl = document.getElementById('iss-piss-fill');
+    var pctEl  = document.getElementById('iss-piss-pct');
+    if (!fillEl || !pctEl) return;
+    if (typeof LightstreamerClient === 'undefined') return;
+
+    _connected = true;
+    if (_lsClient) { try { _lsClient.disconnect(); } catch(e) {} }
+
+    _lsClient = new LightstreamerClient('https://push.lightstreamer.com', 'ISSLIVE');
+    _lsClient.addListener({
+      onStatusChange: function(status) {
+        var el = document.getElementById('iss-piss-pct');
+        if (!el) return;
+        if (status === 'DISCONNECTED' || status === 'STALLED') {
+          el.textContent = 'no signal';
+          _connected = false;
+        }
+      }
+    });
     var sub = new Subscription('MERGE', ['NODE3000005'], ['Value']);
     sub.setRequestedSnapshot('yes');
     sub.addListener({
       onItemUpdate: function(obj) {
         var val = parseFloat(obj.getValue('Value'));
-        if (!isNaN(val)) {
-          var pct = Math.min(100, Math.max(0, val));
-          var fillEl = document.getElementById('iss-piss-fill');
-          var pctEl  = document.getElementById('iss-piss-pct');
-          if (fillEl) fillEl.style.width = pct + '%';
-          if (pctEl)  pctEl.textContent = pct.toFixed(1) + '%';
-        }
-      },
-      onSubscriptionError: function(code, msg) {
-        var el = document.getElementById('iss-piss-pct');
-        if (el) el.textContent = 'no signal';
+        if (isNaN(val)) return;
+        var pct = Math.min(100, Math.max(0, val));
+        var f = document.getElementById('iss-piss-fill');
+        var p = document.getElementById('iss-piss-pct');
+        if (f) f.style.width = pct + '%';
+        if (p) p.textContent = pct.toFixed(1) + '%';
       }
     });
-    lsClient.addListener({
-      onStatusChange: function(status) {
-        if (status === 'DISCONNECTED' || status === 'STALLED') {
-          var el = document.getElementById('iss-piss-pct');
-          if (el) el.textContent = 'no signal';
-        }
-      }
-    });
-    lsClient.subscribe(sub);
+    _lsClient.subscribe(sub);
+    _lsClient.connect();
   }
-  // initPissTank() called via script onload
+
+  // Try immediately in case elements already exist
+  connectPissTank();
+
+  // Watch for elements being added to DOM (lazy panel render)
+  var observer = new MutationObserver(function() {
+    if (!_connected && document.getElementById('iss-piss-fill')) {
+      connectPissTank();
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
 </script>
 </body>
 </html>
