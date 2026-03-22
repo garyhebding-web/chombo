@@ -1443,7 +1443,7 @@
   }
 
 </style>
-<script src="https://unpkg.com/lightstreamer-client-web/lightstreamer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js"></script>
 </head>
 <body>
 
@@ -2806,7 +2806,7 @@
         </div>
         <div class="iss-update">Updates every 30s Â· <span style="cursor:pointer;color:var(--violet)" onclick="monitorLoaded=false;loadISS()">refresh âº</span></div>
           <div class="iss-piss-wrap">
-            <div class="iss-piss-label">// Urine Tank //</div>
+            <div class="iss-piss-label">ISS Piss Tank Capacity</div>
             <div class="iss-piss-bar-bg">
               <div class="iss-piss-bar-fill" id="iss-piss-fill"></div>
             </div>
@@ -3031,7 +3031,7 @@
   // ISS Urine Tank via NASA Lightstreamer
   function initPissTank() {
     if (typeof LightstreamerClient === 'undefined') {
-      setTimeout(initPissTank, 500);
+      window.addEventListener('load', initPissTank);
       return;
     }
     var lsClient = new LightstreamerClient('https://push.lightstreamer.com', 'ISSLIVE');
