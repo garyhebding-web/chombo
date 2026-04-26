@@ -3031,7 +3031,7 @@
     if (!val) { showToast('Enter a city name'); return; }
     localStorage.setItem('chombo-city', val);
     monitorLoaded = false;
-    showToast('\u2713 Location saved — refresh Sit Rep to apply');
+    showToast('\2713  Location saved — refresh Sit Rep to apply');
   }
   function togglePissMode() {
     const next = localStorage.getItem('chombo-piss') !== '1';
@@ -3049,7 +3049,7 @@
     const sub   = document.getElementById('piss-sublabel');
     if (track) track.classList.toggle('on', on);
     if (label) { label.textContent = on ? 'ON' : 'OFF'; label.className = 'piss-label ' + (on ? 'on' : 'off'); }
-    if (sub) sub.textContent = on ? '\uD83D\uDFE1 Engaged' : 'Golden hour aesthetic';
+    if (sub) sub.textContent = on ? '🟡 Engaged' : 'Golden hour aesthetic';
   }
 
 
