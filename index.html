@@ -1460,6 +1460,29 @@
   .points-num { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: #c8a000; text-shadow: 0 0 8px rgba(200,160,0,0.5); }
   .points-label { font-size: 9px; color: #c8a000; text-transform: uppercase; letter-spacing: 0.15em; }
 
+
+  body.jazz-mode {
+    --pink:   #542079;
+    --cyan:   #00B9B4;
+    --violet: #542079;
+    --orange: #00B9B4;
+    --yellow: #00B9B4;
+    --bg:     #0a0a14;
+    --surface:#111124;
+    --text:   #ffffff;
+    --dim:    rgba(255,255,255,0.45);
+    --border: rgba(0,185,180,0.25);
+    --glow-pink:   0 0 12px rgba(84,32,121,0.8);
+    --glow-cyan:   0 0 12px rgba(0,185,180,0.8);
+    --glow-violet: 0 0 12px rgba(84,32,121,0.8);
+    --glow-orange: 0 0 12px rgba(0,185,180,0.6);
+    --glow-yellow: 0 0 12px rgba(0,185,180,0.6);
+  }
+  body.jazz-mode .nav-tab.active svg,
+  body.jazz-mode .nav-tab.active { color: #00B9B4; }
+  body.jazz-mode .auth-logo { color: #542079; text-shadow: 0 0 20px rgba(84,32,121,0.6); }
+  body.jazz-mode .top-bar { border-bottom-color: rgba(0,185,180,0.3); }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js"></script>
 <script>
@@ -1590,6 +1613,22 @@
           </div>
         </div>
 
+        
+        <div class="settings-section">
+          <div class="settings-section-title" style="margin-top:16px;">Jazz</div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Jazz Mode</div>
+              <div class="settings-sublabel" id="jazz-sublabel">90s NBA warmup aesthetic</div>
+            </div>
+            <div class="settings-control">
+              <div class="piss-track" id="jazz-track" onclick="toggleJazzMode()">
+                <div class="piss-thumb" id="jazz-thumb"></div>
+              </div>
+              <span class="piss-label off" id="jazz-label">OFF</span>
+            </div>
+          </div>
+        </div>
         <button class="signout-btn" onclick="signOut()">// SIGN OUT //</button>
         <div style="text-align:center;margin-top:16px;font-size:9px;color:rgba(90,90,138,0.7);font-family:'Share Tech Mono',monospace;letter-spacing:0.1em;">Webmaster: Netsiboj</div>
       </div>
@@ -3008,6 +3047,7 @@
     showToast('\2713  Location saved — refresh Sit Rep to apply');
   }
   function togglePissMode() {
+    if (!document.body.classList.contains('piss-mode')) { localStorage.setItem('chombo-jazz', '0'); applyJazzMode(false); }
     const next = localStorage.getItem('chombo-piss') !== '1';
     localStorage.setItem('chombo-piss', next ? '1' : '0');
     document.body.classList.toggle('piss-mode', next);
@@ -3128,6 +3168,46 @@
     } catch(e) {
       el.innerHTML = '<div style="font-size:11px;color:var(--dim);text-align:center;padding:10px 0;">scan failed</div>';
     }
+  }
+
+
+
+  // ─── JAZZ MODE ───
+  function applyJazzMode(on) {
+    document.body.classList.toggle('jazz-mode', on);
+    // Jazz and piss are mutually exclusive
+    if (on) {
+      document.body.classList.remove('piss-mode');
+      localStorage.setItem('chombo-piss', '0');
+      updatePissModeUI(false);
+    }
+    const track = document.getElementById('jazz-track');
+    const thumb = document.getElementById('jazz-thumb');
+    const label = document.getElementById('jazz-label');
+    const sub   = document.getElementById('jazz-sublabel');
+    if (track) track.classList.toggle('on', on);
+    if (thumb) thumb.style.transform = on ? 'translateX(22px)' : 'translateX(0)';
+    if (label) { label.textContent = on ? 'ON' : 'OFF'; label.className = 'piss-label ' + (on ? 'on' : 'off'); }
+    if (label && on) label.style.color = '#00B9B4';
+    else if (label) label.style.color = '';
+    if (sub) sub.textContent = on ? 'Teal and purple, baby' : '90s NBA warmup aesthetic';
+  }
+
+  function toggleJazzMode() {
+    const on = !document.body.classList.contains('jazz-mode');
+    localStorage.setItem('chombo-jazz', on ? '1' : '0');
+    applyJazzMode(on);
+  }
+
+  function updatePissModeUI(on) {
+    const track = document.getElementById('piss-track');
+    const thumb = track?.querySelector('.piss-thumb');
+    const label = document.getElementById('piss-label');
+    const sub   = document.getElementById('piss-sublabel');
+    if (track) track.classList.toggle('on', on);
+    if (thumb) thumb.style.transform = on ? 'translateX(22px)' : 'translateX(0)';
+    if (label) { label.textContent = on ? 'ON' : 'OFF'; label.className = 'piss-label ' + (on ? 'on' : 'off'); }
+    if (sub) sub.textContent = on ? 'Golden hour aesthetic' : 'Golden hour aesthetic';
   }
 
 </script>
