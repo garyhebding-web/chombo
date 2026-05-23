@@ -1523,7 +1523,7 @@
     </div>
 
     <div id="auth-sent" class="auth-sent" style="display:none;">
-      <span class="auth-sent-icon">✓¦</span>
+      <span class="auth-sent-icon">✓</span>
       <div class="auth-sent-title">// SIGNAL SENT //</div>
       <div class="auth-sent-msg">
         Check your inbox at<br>
@@ -2378,7 +2378,7 @@
         </div>
       </div>
       <div class="tweet-card-text">${escHtml(parsed.text)}</div>
-      <div class="tweet-card-footer">View on X/Twitter ↗</div>
+      <div class="tweet-card-footer">View on X/Twitter ↗</div>
     `;
   }
 
@@ -2804,7 +2804,7 @@
             <div class="iss-dot-ring"></div>
           </div>
         </div>
-        <div class="iss-update">Updates every 30s · <span style="cursor:pointer;color:var(--violet)" onclick="monitorLoaded=false;loadISS()">refresh ↻º</span></div>
+        <div class="iss-update">Updates every 30s · <span style="cursor:pointer;color:var(--violet)" onclick="monitorLoaded=false;loadISS()">refresh ↻</span></div>
           <div class="iss-piss-wrap">
             <div class="iss-piss-label">ISS PISS TANK CAPACITY</div>
             <div class="iss-piss-bar-bg">
@@ -2848,7 +2848,7 @@
       }).join('');
 
       document.getElementById('quakes-content').innerHTML = html +
-        '<div class="monitor-refresh" onclick="monitorLoaded=false;loadQuakes()">refresh ↻º</div>';
+        '<div class="monitor-refresh" onclick="monitorLoaded=false;loadQuakes()">refresh ↻</div>';
     } catch(e) {
       document.getElementById('quakes-content').innerHTML = '<div class="monitor-loading">Could not load seismic data</div>';
     }
