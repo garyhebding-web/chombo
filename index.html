@@ -2515,7 +2515,7 @@
 
       // Latest Kp index
       const kpLatest = kpData[kpData.length - 1];
-      const kp = parseFloat(kpLatest[1]).toFixed(1);
+      const kp = parseFloat(kpLatest.Kp !== undefined ? kpLatest.Kp : kpLatest[1]).toFixed(1);
 
       const kpColor = kp >= 7 ? 'var(--pink)' : kp >= 5 ? 'var(--orange)' : kp >= 3 ? 'var(--yellow)' : 'var(--cyan)';
       const kpLabel = kp >= 7 ? 'Severe Storm' : kp >= 5 ? 'Strong Storm' : kp >= 3 ? 'Minor Storm' : 'Quiet';
@@ -2544,113 +2544,59 @@
 
   // ── GLOBAL FLIGHTS (OpenSky Network) ──
   async function loadFlights() {
+    const el = document.getElementById('flights-content');
+    if (!el) return;
     try {
-      // OpenSky gives a count of all airborne flights
-      const res = await fetch('https://opensky-network.org/api/states/all?lamin=0&lomin=0&lamax=1&lomax=1');
-      // That's too small — use a broader estimate approach with known aviation stats
-      // Use aviationstack free tier alternative: just show a real-time estimate
-      // Fall back to a well-known static-ish figure with timestamp variation
-      const baseFlights = 12000;
-      const variation = Math.floor(Math.sin(Date.now() / 600000) * 800 + Math.random() * 200);
-      const total = baseFlights + variation;
-
-      // Also try to get real number from OpenSky full feed (no auth needed, returns count)
-      let realTotal = null;
-      try {
-        const fullRes = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://opensky-network.org/api/states/all'));
-        if (fullRes.ok) {
-          const fullData = await fullRes.json();
-          if (fullData.states) realTotal = fullData.states.length;
-        }
-      } catch(e2) {}
-
-      const displayNum = realTotal || total;
-      const cargo   = Math.round(displayNum * 0.28);
-      const private_ = Math.round(displayNum * 0.08);
-      const commercial = displayNum - cargo - private_;
-
-      document.getElementById('flights-content').innerHTML = `
-        <div class="flights-big">
-          <span class="flights-num">${displayNum.toLocaleString()}</span>
-          <div class="flights-label">aircraft airborne right now</div>
-        </div>
-        <div class="flights-sub">
-          <div class="flights-sub-item">
-            <span class="flights-sub-val">${commercial.toLocaleString()}</span>
-            <div class="flights-sub-label">Commercial</div>
-          </div>
-          <div class="flights-sub-item">
-            <span class="flights-sub-val">${cargo.toLocaleString()}</span>
-            <div class="flights-sub-label">Cargo</div>
-          </div>
-          <div class="flights-sub-item">
-            <span class="flights-sub-val">${private_.toLocaleString()}</span>
-            <div class="flights-sub-label">Private</div>
-          </div>
-        </div>`;
+      // Use airplanes.live — free, no key, returns global military + civilian aircraft
+      // Sample a large region to get a global count estimate
+      const r = await fetch('https://api.airplanes.live/v2/point/0/0/500');
+      const data = await r.json();
+      const count = (data.ac || []).length;
+      // Extrapolate: this 500nm circle covers ~2.4M sq mi; total airspace ~200M sq mi
+      // Just show the real count as "aircraft tracked in range"
+      el.innerHTML =
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--violet);text-shadow:var(--glow-violet);">' + count.toLocaleString() + '</span>' +
+        '<div class="monitor-stat-label">Aircraft Tracked</div></div>' +
+        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--dim);font-size:14px;">LIVE</span>' +
+        '<div class="monitor-stat-label">ADS-B Feed</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:var(--dim);margin-top:10px;text-align:right;">Source: airplanes.live · equatorial sample</div>';
     } catch(e) {
-      document.getElementById('flights-content').innerHTML = '<div class="monitor-loading">Could not load flight data</div>';
+      el.innerHTML = '<div style="font-size:11px;color:var(--dim);text-align:center;padding:8px;">Could not load flight data</div>';
     }
   }
 
   // ── ACTIVE WILDFIRES (NASA FIRMS via USGS proxy) ──
   async function loadFires() {
+    const el = document.getElementById('fires-content');
+    if (!el) return;
     try {
-      // NASA FIRMS VIIRS 24hr active fire data — use a public endpoint
-      const url = 'https://firms.modaps.eosdis.nasa.gov/api/country/csv/5f13c4a8d67b4bd88ca87ebecb1c5a3c/VIIRS_SNPP_NRT/USA/1';
-      const res = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url));
+      // NASA EONET - free, no key needed
+      const r = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?category=wildfires&status=open&limit=50');
+      const data = await r.json();
+      const events = data.events || [];
+      const count = events.length;
+      // Sort by most recently updated
+      events.sort((a,b) => new Date(b.geometry?.[0]?.date||0) - new Date(a.geometry?.[0]?.date||0));
+      const top = events.slice(0, 5);
+      const topHtml = top.map(e =>
+        '<div style="padding:5px 0;border-bottom:1px solid rgba(90,90,138,0.15);font-size:11px;">' +
+        '<span style="color:var(--orange);">🔥 ' + e.title + '</span>' +
+        '</div>'
+      ).join('');
 
-      if (!res.ok) throw new Error('Failed');
-      const text = await res.text();
-      const lines = text.trim().split(
-).slice(1).filter(l => l.length > 0);
-      const count = lines.length;
-
-      // Parse top entries by brightness
-      const fires = lines.slice(0, 100).map(line => {
-        const cols = line.split(',');
-        return { lat: parseFloat(cols[0]), lon: parseFloat(cols[1]), brightness: parseFloat(cols[2]) };
-      }).sort((a,b) => b.brightness - a.brightness).slice(0, 5);
-
-      // Get region names using reverse geocoding isn't feasible — show coordinates
-      const high = fires.filter(f => f.brightness > 350).length;
-      const med  = fires.filter(f => f.brightness > 320 && f.brightness <= 350).length;
-      const low  = count - high - med;
-
-      document.getElementById('fires-content').innerHTML = `
-        <div class="fire-stats">
-          <div class="fire-stat">
-            <span class="fire-val">${count.toLocaleString()}</span>
-            <div class="fire-label">US Detections</div>
-          </div>
-          <div class="fire-stat" style="border-color:rgba(255,45,120,0.3)">
-            <span class="fire-val" style="color:var(--pink);text-shadow:var(--glow-pink)">${high}</span>
-            <div class="fire-label">High Intensity</div>
-          </div>
-          <div class="fire-stat">
-            <span class="fire-val" style="color:var(--yellow);text-shadow:var(--glow-yellow)">${med}</span>
-            <div class="fire-label">Moderate</div>
-          </div>
-        </div>
-        <div style="font-size:9px;color:var(--dim);font-family:'Rajdhani',sans-serif;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Top Hotspots (by brightness)</div>
-        ${fires.map(f => {
-          const intensity = f.brightness > 350 ? 'var(--pink)' : f.brightness > 320 ? 'var(--orange)' : 'var(--yellow)';
-          return `<div class="fire-item">
-            <div class="fire-dot" style="background:${intensity};box-shadow:0 0 6px ${intensity}"></div>
-            <div class="fire-name">${f.lat.toFixed(2)}°N, ${Math.abs(f.lon).toFixed(2)}°W</div>
-            <div class="fire-acres">${Math.round(f.brightness)}K</div>
-          </div>`;
-        }).join('')}
-        <div class="monitor-refresh" onclick="monitorLoaded=false;loadFires()">refresh ↻º</div>`;
+      el.innerHTML =
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">' +
+        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--orange);text-shadow:var(--glow-orange);">' + count + '</span><div class="monitor-stat-label">Active Events</div></div>' +
+        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--orange);text-shadow:var(--glow-orange);">' + top.length + '</span><div class="monitor-stat-label">Shown</div></div>' +
+        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--orange);text-shadow:var(--glow-orange);">NASA</div><div class="monitor-stat-label">Source</div></div>' +
+        '</div>' +
+        '<div style="font-size:10px;color:var(--dim);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.1em;">Recent Events</div>' +
+        topHtml +
+        '<div style="font-size:9px;color:var(--dim);margin-top:8px;text-align:right;">Source: NASA EONET</div>';
     } catch(e) {
-      // Fallback with USGS approach
-      document.getElementById('fires-content').innerHTML = `
-        <div class="fire-stats">
-          <div class="fire-stat"><span class="fire-val">—</span><div class="fire-label">US Detections</div></div>
-          <div class="fire-stat"><span class="fire-val" style="color:var(--pink)">—</span><div class="fire-label">High Intensity</div></div>
-          <div class="fire-stat"><span class="fire-val" style="color:var(--yellow)">—</span><div class="fire-label">Moderate</div></div>
-        </div>
-        <div class="monitor-loading" style="margin-top:8px;">NASA API key required — <a href="https://firms.modaps.eosdis.nasa.gov/api/area/" target="_blank" style="color:var(--orange)">get free key</a></div>`;
+      el.innerHTML = '<div style="font-size:11px;color:var(--dim);text-align:center;padding:8px;">Could not load fire data</div>';
     }
   }
 
@@ -3149,37 +3095,37 @@
     const el = document.getElementById('doom-content');
     if (!el) return;
     try {
-      const results = [];
-      const requests = E6B_ICAOS.map(icao =>
-        fetch('https://api.adsb.lol/v2/icao/' + icao.toLowerCase())
-          .then(r => r.json())
-          .then(d => { if (d.ac && d.ac.length) results.push(...d.ac); })
-          .catch(() => {})
-      );
-      await Promise.all(requests);
-      const count = results.length;
-      let html;
+      // Use airplanes.live military endpoint, filter for E-6B Mercury (type 'E6')
+      const r = await fetch('https://api.airplanes.live/v2/mil');
+      const data = await r.json();
+      const ac = data.ac || [];
+      // E-6B Mercury: type 'E6', or known callsign prefixes GOTO/TACA
+      const e6b = ac.filter(a => {
+        const t = (a.t || '').toUpperCase();
+        const f = (a.flight || '').toUpperCase().trim();
+        return t === 'E6' || f.startsWith('GOTO') || f.startsWith('TACA') || f.startsWith('TACAMO');
+      });
+      const count = e6b.length;
       if (count === 0) {
-        html = '<div style="text-align:center;padding:8px 0;">' +
+        el.innerHTML = '<div style="text-align:center;padding:10px 0;">' +
           '<div style="font-family:Orbitron,sans-serif;font-size:36px;font-weight:700;color:var(--dim);">0</div>' +
-          '<div style="font-size:11px;color:var(--dim);margin-top:4px;">All doomsday planes on the ground. We are probably fine.</div>' +
+          '<div style="font-size:11px;color:var(--dim);margin-top:6px;">All doomsday planes on the ground. We are probably fine.</div>' +
           '</div>';
       } else {
-        const planes = results.map(ac =>
+        const planes = e6b.map(a =>
           '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(90,90,138,0.15);font-size:11px;font-family:Share Tech Mono,monospace;">' +
-          '<span style="color:var(--pink);font-weight:700;">' + (ac.flight || ac.hex || '?').trim() + '</span>' +
-          '<span style="color:var(--dim);">' + (ac.lat ? ac.lat.toFixed(2) + '°, ' + ac.lon.toFixed(2) + '°' : 'pos unknown') + '</span>' +
-          '<span style="color:var(--dim);">' + (ac.alt_baro || '?') + ' ft</span>' +
+          '<span style="color:var(--pink);font-weight:700;">' + (a.flight || a.hex || '?').trim() + '</span>' +
+          '<span style="color:var(--dim);">' + (a.lat != null ? a.lat.toFixed(2) + '°, ' + a.lon.toFixed(2) + '°' : 'pos unknown') + '</span>' +
+          '<span style="color:var(--dim);">' + (a.alt_baro || '?') + ' ft</span>' +
           '</div>'
         ).join('');
-        html = '<div style="text-align:center;padding:4px 0 8px;">' +
+        el.innerHTML = '<div style="text-align:center;padding:4px 0 10px;">' +
           '<div style="font-family:Orbitron,sans-serif;font-size:36px;font-weight:700;color:var(--pink);text-shadow:var(--glow-pink);">' + count + '</div>' +
-          '<div style="font-size:11px;color:var(--pink);margin-top:4px;">E-6B Mercury airborne</div>' +
+          '<div style="font-size:11px;color:var(--pink);margin-top:4px;">☢ E-6B Mercury airborne</div>' +
           '</div>' + planes;
       }
-      el.innerHTML = html;
     } catch(e) {
-      el.innerHTML = '<div style="font-size:11px;color:var(--dim);text-align:center;padding:8px 0;">scan failed</div>';
+      el.innerHTML = '<div style="font-size:11px;color:var(--dim);text-align:center;padding:10px 0;">scan failed</div>';
     }
   }
 
