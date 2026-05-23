@@ -54,7 +54,7 @@
     z-index: 9998;
   }
 
-  /* ââ BACKGROUND ââ */
+  /* ── BACKGROUND ── */
   .bg-wrap { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
 
   .bg-sun {
@@ -87,11 +87,11 @@
     opacity: 0.8;
   }
 
-  /* ââ SCREENS ââ */
+  /* ── SCREENS ── */
   .screen { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; }
   .screen.active { display: flex; }
 
-  /* ââ AUTH SCREEN ââ */
+  /* ── AUTH SCREEN ── */
   #screen-auth {
     align-items: center;
     justify-content: center;
@@ -235,12 +235,12 @@
     text-shadow: var(--glow-pink);
   }
 
-  /* ââ APP SCREEN ââ */
+  /* ── APP SCREEN ── */
   #screen-app {
     flex-direction: column;
   }
 
-  /* ââ APP LAYOUT ââ */
+  /* ── APP LAYOUT ── */
   .app {
     flex: 1;
     display: flex;
@@ -250,7 +250,7 @@
     z-index: 1;
   }
 
-  /* ââ TOP BAR ââ */
+  /* ── TOP BAR ── */
   .topbar {
     flex-shrink: 0;
     padding: 12px 18px 10px;
@@ -313,12 +313,12 @@
     color: white; cursor: pointer; flex-shrink: 0;
   }
 
-  /* ââ MAIN COL ââ */
+  /* ── MAIN COL ── */
   .main-col {
     flex: 1; display: flex; flex-direction: column; overflow: hidden;
   }
 
-  /* ââ FEED ââ */
+  /* ── FEED ── */
   .feed-wrap {
     flex: 1; overflow-y: auto; overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
@@ -343,7 +343,7 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ââ POSTS ââ */
+  /* ── POSTS ── */
   .post {
     display: flex; gap: 11px;
     padding: 15px 16px;
@@ -434,7 +434,7 @@
     filter: drop-shadow(0 0 4px rgba(255,45,120,0.9));
   }
 
-  /* ââ FAB ââ */
+  /* ── FAB ── */
   .fab {
     position: fixed;
     bottom: calc(var(--nav-height) + var(--safe-bottom) + 16px);
@@ -450,7 +450,7 @@
   .fab:active { transform: scale(0.92); }
   .fab svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; }
 
-  /* ââ BOTTOM NAV ââ */
+  /* ── BOTTOM NAV ── */
   .bottom-nav {
     flex-shrink: 0;
     height: calc(var(--nav-height) + var(--safe-bottom));
@@ -485,7 +485,7 @@
   .nav-tab.active svg { filter: drop-shadow(0 0 5px rgba(255,45,120,0.8)); }
   .nav-tab:active { transform: scale(0.88); }
 
-  /* ââ COMPOSE SHEET ââ */
+  /* ── COMPOSE SHEET ── */
   .sheet-overlay {
     position: fixed; inset: 0;
     background: rgba(5,5,15,0.7);
@@ -571,7 +571,7 @@
   .btn-transmit:active { transform: scale(0.95); }
   .btn-transmit:disabled { opacity: 0.5; }
 
-  /* ââ PANELS ââ */
+  /* ── PANELS ── */
   .panel {
     display: none; flex-direction: column;
     overflow-y: auto;
@@ -688,7 +688,7 @@
 
 
 
-  /* ââ TWEET EMBED CARD ââ */
+  /* ── TWEET EMBED CARD ── */
   .tweet-card {
     margin-top: 10px;
     background: rgba(13,13,43,0.8);
@@ -764,7 +764,7 @@
   }
 
 
-  /* ââ WORLD CLOCKS ââ */
+  /* ── WORLD CLOCKS ── */
   .clocks-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
   }
@@ -799,7 +799,7 @@
     font-family: 'Share Tech Mono', monospace;
   }
 
-  /* ââ GTA6 COUNTDOWN ââ */
+  /* ── GTA6 COUNTDOWN ── */
   .countdown-wrap {
     text-align: center;
   }
@@ -839,7 +839,7 @@
     letter-spacing: 0.05em;
   }
 
-  /* ââ SOLAR ââ */
+  /* ── SOLAR ── */
   .solar-main {
     display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;
   }
@@ -873,7 +873,7 @@
     font-size: 10px; color: var(--dim); font-family: 'Share Tech Mono', monospace;
   }
 
-  /* ââ FLIGHTS ââ */
+  /* ── FLIGHTS ── */
   .flights-big {
     text-align: center; padding: 8px 0;
   }
@@ -901,7 +901,7 @@
   }
   .flights-sub-label { font-size: 8px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
 
-  /* ââ WILDFIRES ââ */
+  /* ── WILDFIRES ── */
   .fire-stats {
     display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;
   }
@@ -934,7 +934,7 @@
   .fire-name { flex: 1; color: var(--white); font-family: 'Share Tech Mono', monospace; font-size: 10px; }
   .fire-acres { font-size: 9px; color: var(--dim); font-family: 'Rajdhani', sans-serif; font-weight: 600; }
 
-  /* ââ SATELLITES ââ */
+  /* ── SATELLITES ── */
   .sat-big {
     text-align: center; padding: 4px 0 12px;
   }
@@ -958,7 +958,7 @@
 
   .sat-type-val { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; color: var(--violet); display: block; }
   .sat-type-label { font-size: 7px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
-  /* ââ MONITOR TAB ââ */
+  /* ── MONITOR TAB ── */
   .monitor-grid {
     display: flex; flex-direction: column; gap: 12px;
   }
@@ -1166,7 +1166,7 @@
     font-size: 9px; color: var(--dim); text-align: center;
     margin-top: 8px; font-family: 'Share Tech Mono', monospace;
   }
-  /* ââ THREAD VIEW ââ */
+  /* ── THREAD VIEW ── */
   .thread-screen {
     position: fixed; inset: 0; z-index: 150;
     background: var(--black);
@@ -1259,15 +1259,15 @@
     border-radius: 1px; flex-shrink: 0; margin-left: 17px;
   }
 
-  /* ââ DELETE BUTTON ââ */
+  /* ── DELETE BUTTON ── */
   .action-btn.delete-btn { color: var(--dim); margin-left: auto; }
   .action-btn.delete-btn:active { color: var(--pink); }
 
-  /* ââ TIMESTAMP TOOLTIP ââ */
+  /* ── TIMESTAMP TOOLTIP ── */
   .post-time { cursor: pointer; position: relative; }
   .post-time:hover { color: var(--cyan); }
 
-  /* ââ UNREAD DOT ââ */
+  /* ── UNREAD DOT ── */
   .nav-tab { position: relative; }
   .unread-dot {
     position: absolute; top: 6px; right: calc(50% - 14px);
@@ -1276,7 +1276,7 @@
     display: none;
   }
   .unread-dot.visible { display: block; }
-  /* ââ PULL TO REFRESH ââ */
+  /* ── PULL TO REFRESH ── */
   .ptr-indicator {
     display: flex;
     align-items: center;
@@ -1306,7 +1306,7 @@
   }
 
   .ptr-spinner.spinning { animation: spin 0.7s linear infinite; }
-  /* ââ TOAST ââ */
+  /* ── TOAST ── */
   .toast {
     position: fixed;
     bottom: calc(var(--nav-height) + var(--safe-bottom) + 16px);
@@ -1322,7 +1322,7 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ââ EMPTY ââ */
+  /* ── EMPTY ── */
   .empty {
     padding: 60px 24px; text-align: center;
     color: var(--dim); font-size: 11px;
@@ -1496,7 +1496,7 @@
   <div class="bg-grid"></div>
 </div>
 
-<!-- ââ AUTH SCREEN ââ -->
+<!-- ── AUTH SCREEN ── -->
 <div class="screen active" id="screen-auth">
   <div class="auth-box" id="auth-form-box">
     <div class="auth-logo">CHOMBO</div>
@@ -1508,7 +1508,7 @@
 
       <div id="password-section">
         <div class="auth-label">// PASSWORD //</div>
-        <input class="auth-input" type="password" id="auth-password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢â¢â¢" autocomplete="current-password">
+        <input class="auth-input" type="password" id="auth-password" placeholder="••••••••••" autocomplete="current-password">
       </div>
 
       <div id="username-section" style="display:none;">
@@ -1523,7 +1523,7 @@
     </div>
 
     <div id="auth-sent" class="auth-sent" style="display:none;">
-      <span class="auth-sent-icon">â¦</span>
+      <span class="auth-sent-icon">✓¦</span>
       <div class="auth-sent-title">// SIGNAL SENT //</div>
       <div class="auth-sent-msg">
         Check your inbox at<br>
@@ -1534,7 +1534,7 @@
   </div>
 </div>
 
-<!-- ââ APP SCREEN ââ -->
+<!-- ── APP SCREEN ── -->
 <div class="screen" id="screen-app">
   <div class="app">
 
@@ -1801,14 +1801,14 @@
   <div class="compose-tweet-preview" id="compose-tweet-preview"></div>
   <div class="sheet-footer">
     <span class="char-count" id="charCount">280</span>
-    <button class="btn-transmit" id="transmitBtn" onclick="submitPost()">CHOMBO âº</button>
+    <button class="btn-transmit" id="transmitBtn" onclick="submitPost()">CHOMBO ›</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // ââ SUPABASE INIT ââ
+  // ── SUPABASE INIT ──
   const SUPABASE_URL = 'https://ndbteerlvitwqcmvycgc.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kYnRlZXJsdml0d3FjbXZ5Y2djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0Njk3NTYsImV4cCI6MjA4NzA0NTc1Nn0.yhpZ5h59Z24oiNbi2orIb7IsunH7nwM6ky3lHgd8rys';
   const { createClient } = supabase;
@@ -1822,14 +1822,14 @@
     }
   });
 
-  // ââ STATE ââ
+  // ── STATE ──
   let currentUser = null;
   let myProfile = null;
   let allProfiles = {};
   let myLikes = new Set();
   let realtimeSub = null;
 
-  // ââ AUTH ââ
+  // ── AUTH ──
   let magicLinkMode = false;
 
   function toggleMagicLink() {
@@ -1852,11 +1852,11 @@
     btn.disabled = true;
     btn.textContent = 'ENTERING...';
 
-    // Timeout safety â re-enable button after 8 seconds no matter what
+    // Timeout safety — re-enable button after 8 seconds no matter what
     const timeout = setTimeout(() => {
       btn.disabled = false;
       btn.textContent = 'ENTER CHOMBO';
-      showToast('// TIMED OUT â TRY AGAIN //');
+      showToast('// TIMED OUT — TRY AGAIN //');
     }, 8000);
 
     try {
@@ -1870,7 +1870,7 @@
       // on success, onAuthStateChange handles the rest
     } catch(e) {
       clearTimeout(timeout);
-      showToast('// ERROR â TRY AGAIN //');
+      showToast('// ERROR — TRY AGAIN //');
       btn.disabled = false;
       btn.textContent = 'ENTER CHOMBO';
     }
@@ -1919,7 +1919,7 @@
     document.getElementById('auth-username').value = '';
   }
 
-  // ââ BOOT ââ
+  // ── BOOT ──
   async function boot() {
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
@@ -1988,7 +1988,7 @@
     document.getElementById('friend-handle-lg').textContent = '@' + friend.username.toLowerCase();
   }
 
-  // ââ FEED ââ
+  // ── FEED ──
   let lastSeenAt = localStorage.getItem('chombo-last-seen') ? new Date(localStorage.getItem('chombo-last-seen')) : null;
 
   async function loadFeed() {
@@ -2099,7 +2099,7 @@
     }
   }
 
-  // ââ REALTIME ââ
+  // ── REALTIME ──
   function subscribeRealtime() {
     realtimeSub = sb
       .channel('chombo-feed')
@@ -2112,7 +2112,7 @@
       .subscribe();
   }
 
-  // ââ LIKE ââ
+  // ── LIKE ──
   async function toggleLike(postId, currentlyLiked) {
     if (!currentUser) return;
 
@@ -2127,7 +2127,7 @@
     await loadFeed();
   }
 
-  // ââ POST ââ
+  // ── POST ──
   async function submitPost() {
     const input = document.getElementById('composeInput');
     const content = input.value.trim();
@@ -2146,7 +2146,7 @@
     });
 
     btn.disabled = false;
-    btn.textContent = 'CHOMBO âº';
+    btn.textContent = 'CHOMBO ›';
 
     if (error) { showToast('// ERROR //'); console.error(error); return; }
 
@@ -2158,7 +2158,7 @@
     await loadFeed();
   }
 
-  // ââ COMPOSE ââ
+  // ── COMPOSE ──
   function openCompose() {
     document.getElementById('overlay').classList.add('open');
     document.getElementById('composeSheet').classList.add('open');
@@ -2184,7 +2184,7 @@
     checkComposeForTweet(el.value);
   }
 
-  // ââ TABS ââ
+  // ── TABS ──
   function switchTab(tab) {
     ['feed','stats','monitor','settings'].forEach(t => {
       document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
@@ -2204,14 +2204,14 @@
     if (tab === 'monitor') { loadMonitor(); loadDoomsday(); if(!window._doomInterval) window._doomInterval = setInterval(loadDoomsday, 60000); }
   }
 
-  // ââ SCREENS ââ
+  // ── SCREENS ──
   function showScreen(name) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(`screen-${name}`).classList.add('active');
     if (name !== 'app') document.getElementById('fab').style.display = 'none';
   }
 
-  // ââ HELPERS ââ
+  // ── HELPERS ──
   function escHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
@@ -2256,7 +2256,7 @@
   }, { passive: true });
 
 
-  // ââ PULL TO REFRESH ââ
+  // ── PULL TO REFRESH ──
   let ptrStartY = 0;
   let ptrDist = 0;
   let ptrThreshold = 65;
@@ -2307,7 +2307,7 @@
 
 
 
-  // ââ TWEET EMBED ââ
+  // ── TWEET EMBED ──
   function detectTweetUrl(text) {
     const match = text.match(/https?:\/\/(www\.)?(twitter\.com|x\.com)\/\w+\/status\/[^\s]*/i);
     return match ? match[0] : null;
@@ -2378,7 +2378,7 @@
         </div>
       </div>
       <div class="tweet-card-text">${escHtml(parsed.text)}</div>
-      <div class="tweet-card-footer">View on X/Twitter â</div>
+      <div class="tweet-card-footer">View on X/Twitter ↗</div>
     `;
   }
 
@@ -2429,7 +2429,7 @@
 
 
 
-  // ââ WORLD CLOCKS ââ
+  // ── WORLD CLOCKS ──
   const CLOCKS = [
     { city: 'YOUR TIME',   tz: Intl.DateTimeFormat().resolvedOptions().timeZone, primary: true },
     { city: 'UTC',         tz: 'UTC' },
@@ -2461,9 +2461,9 @@
     if (!clockInterval) clockInterval = setInterval(renderClocks, 1000);
   }
 
-  // ââ GTA6 COUNTDOWN ââ
+  // ── GTA6 COUNTDOWN ──
   function renderGTA6() {
-    // GTA 6 â May 26, 2026 (announced window, using end of that day)
+    // GTA 6 — May 26, 2026 (announced window, using end of that day)
     const target = new Date('2026-11-19T23:59:59');
     const el = document.getElementById('gta6-content');
     if (!el) return;
@@ -2496,10 +2496,10 @@
     setInterval(update, 1000);
   }
 
-  // ââ SOLAR ACTIVITY ââ
+  // ── SOLAR ACTIVITY ──
   async function loadSolar() {
     try {
-      // NOAA space weather â solar wind + Kp index
+      // NOAA space weather — solar wind + Kp index
       const [windRes, kpRes] = await Promise.all([
         fetch('https://services.swpc.noaa.gov/products/solar-wind/plasma-7-day.json'),
         fetch('https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json')
@@ -2529,25 +2529,25 @@
           </div>
           <div class="solar-stat">
             <span class="solar-val" style="color:var(--yellow);text-shadow:var(--glow-yellow)">${density}</span>
-            <div class="solar-label">p/cmÂ³ density</div>
+            <div class="solar-label">p/cm³ density</div>
           </div>
         </div>
-        <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:0.15em;font-family:'Rajdhani',sans-serif;font-weight:700;margin-bottom:6px;">Kp Index â <span style="color:${kpColor}">${kp} Â· ${kpLabel}</span></div>
+        <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:0.15em;font-family:'Rajdhani',sans-serif;font-weight:700;margin-bottom:6px;">Kp Index — <span style="color:${kpColor}">${kp} · ${kpLabel}</span></div>
         <div class="solar-storm-bar">
           <div class="solar-storm-fill" style="width:${kpPct}%;background:${kpColor};box-shadow:0 0 8px ${kpColor}88"></div>
         </div>
-        <div class="solar-status-text">Scale: 0 (quiet) â 9 (extreme storm)</div>`;
+        <div class="solar-status-text">Scale: 0 (quiet) → 9 (extreme storm)</div>`;
     } catch(e) {
       document.getElementById('solar-content').innerHTML = '<div class="monitor-loading">Could not load solar data</div>';
     }
   }
 
-  // ââ GLOBAL FLIGHTS (OpenSky Network) ââ
+  // ── GLOBAL FLIGHTS (OpenSky Network) ──
   async function loadFlights() {
     try {
       // OpenSky gives a count of all airborne flights
       const res = await fetch('https://opensky-network.org/api/states/all?lamin=0&lomin=0&lamax=1&lomax=1');
-      // That's too small â use a broader estimate approach with known aviation stats
+      // That's too small — use a broader estimate approach with known aviation stats
       // Use aviationstack free tier alternative: just show a real-time estimate
       // Fall back to a well-known static-ish figure with timestamp variation
       const baseFlights = 12000;
@@ -2593,10 +2593,10 @@
     }
   }
 
-  // ââ ACTIVE WILDFIRES (NASA FIRMS via USGS proxy) ââ
+  // ── ACTIVE WILDFIRES (NASA FIRMS via USGS proxy) ──
   async function loadFires() {
     try {
-      // NASA FIRMS VIIRS 24hr active fire data â use a public endpoint
+      // NASA FIRMS VIIRS 24hr active fire data — use a public endpoint
       const url = 'https://firms.modaps.eosdis.nasa.gov/api/country/csv/5f13c4a8d67b4bd88ca87ebecb1c5a3c/VIIRS_SNPP_NRT/USA/1';
       const res = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url));
 
@@ -2612,7 +2612,7 @@
         return { lat: parseFloat(cols[0]), lon: parseFloat(cols[1]), brightness: parseFloat(cols[2]) };
       }).sort((a,b) => b.brightness - a.brightness).slice(0, 5);
 
-      // Get region names using reverse geocoding isn't feasible â show coordinates
+      // Get region names using reverse geocoding isn't feasible — show coordinates
       const high = fires.filter(f => f.brightness > 350).length;
       const med  = fires.filter(f => f.brightness > 320 && f.brightness <= 350).length;
       const low  = count - high - med;
@@ -2641,20 +2641,20 @@
             <div class="fire-acres">${Math.round(f.brightness)}K</div>
           </div>`;
         }).join('')}
-        <div class="monitor-refresh" onclick="monitorLoaded=false;loadFires()">refresh âº</div>`;
+        <div class="monitor-refresh" onclick="monitorLoaded=false;loadFires()">refresh ↻º</div>`;
     } catch(e) {
       // Fallback with USGS approach
       document.getElementById('fires-content').innerHTML = `
         <div class="fire-stats">
-          <div class="fire-stat"><span class="fire-val">â</span><div class="fire-label">US Detections</div></div>
-          <div class="fire-stat"><span class="fire-val" style="color:var(--pink)">â</span><div class="fire-label">High Intensity</div></div>
-          <div class="fire-stat"><span class="fire-val" style="color:var(--yellow)">â</span><div class="fire-label">Moderate</div></div>
+          <div class="fire-stat"><span class="fire-val">—</span><div class="fire-label">US Detections</div></div>
+          <div class="fire-stat"><span class="fire-val" style="color:var(--pink)">—</span><div class="fire-label">High Intensity</div></div>
+          <div class="fire-stat"><span class="fire-val" style="color:var(--yellow)">—</span><div class="fire-label">Moderate</div></div>
         </div>
-        <div class="monitor-loading" style="margin-top:8px;">NASA API key required â <a href="https://firms.modaps.eosdis.nasa.gov/api/area/" target="_blank" style="color:var(--orange)">get free key</a></div>`;
+        <div class="monitor-loading" style="margin-top:8px;">NASA API key required — <a href="https://firms.modaps.eosdis.nasa.gov/api/area/" target="_blank" style="color:var(--orange)">get free key</a></div>`;
     }
   }
 
-  // ââ SATELLITES ââ
+  // ── SATELLITES ──
   async function loadSatellites() {
     try {
       // Use N2YO or a static well-sourced count
@@ -2694,7 +2694,7 @@
     }
   }
 
-  // ââ MONITOR ââ
+  // ── MONITOR ──
   let monitorLoaded = false;
 
   async function loadMonitor() {
@@ -2707,7 +2707,7 @@
       'Last updated: ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
   }
 
-  // ââ WEATHER (Open-Meteo, no key needed) ââ
+  // ── WEATHER (Open-Meteo, no key needed) ──
   async function loadWeather() {
     try {
       // Get location first
@@ -2752,16 +2752,16 @@
   }
 
   function weatherIcon(code) {
-    if (code === 0) return 'âï¸';
-    if (code <= 2) return 'â';
-    if (code <= 3) return 'âï¸';
-    if (code <= 48) return 'ð«ï¸';
-    if (code <= 55) return 'ð¦ï¸';
-    if (code <= 65) return 'ð§ï¸';
-    if (code <= 77) return 'âï¸';
-    if (code <= 82) return 'ð§ï¸';
-    if (code <= 86) return 'ð¨ï¸';
-    return 'âï¸';
+    if (code === 0) return '☀️';
+    if (code <= 2) return '⛅';
+    if (code <= 3) return '☁️';
+    if (code <= 48) return '🌫️';
+    if (code <= 55) return '🌦️';
+    if (code <= 65) return '🌧️';
+    if (code <= 77) return '❄️';
+    if (code <= 82) return '🌧️';
+    if (code <= 86) return '🌨️';
+    return '⛈️';
   }
 
   function weatherDesc(code) {
@@ -2777,7 +2777,7 @@
     return 'Thunderstorm';
   }
 
-  // ââ AQI (Open-Meteo air quality) ââ
+  // ── AQI (Open-Meteo air quality) ──
   async function loadAQI() {
     try {
       const geoRes = await fetch('https://ipapi.co/json/');
@@ -2817,7 +2817,7 @@
     return           { label: 'Hazardous',         color: '#7e0023', desc: 'Emergency conditions' };
   }
 
-  // ââ ISS TRACKER ââ
+  // ── ISS TRACKER ──
   async function loadISS() {
     try {
       const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
@@ -2857,7 +2857,7 @@
             <div class="iss-dot-ring"></div>
           </div>
         </div>
-        <div class="iss-update">Updates every 30s Â· <span style="cursor:pointer;color:var(--violet)" onclick="monitorLoaded=false;loadISS()">refresh âº</span></div>
+        <div class="iss-update">Updates every 30s · <span style="cursor:pointer;color:var(--violet)" onclick="monitorLoaded=false;loadISS()">refresh ↻º</span></div>
           <div class="iss-piss-wrap">
             <div class="iss-piss-label">ISS Piss Tank Capacity</div>
             <div class="iss-piss-bar-bg">
@@ -2873,7 +2873,7 @@
     }
   }
 
-  // ââ EARTHQUAKES (USGS) ââ
+  // ── EARTHQUAKES (USGS) ──
   async function loadQuakes() {
     try {
       const url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson';
@@ -2901,13 +2901,13 @@
       }).join('');
 
       document.getElementById('quakes-content').innerHTML = html +
-        '<div class="monitor-refresh" onclick="monitorLoaded=false;loadQuakes()">refresh âº</div>';
+        '<div class="monitor-refresh" onclick="monitorLoaded=false;loadQuakes()">refresh ↻º</div>';
     } catch(e) {
       document.getElementById('quakes-content').innerHTML = '<div class="monitor-loading">Could not load seismic data</div>';
     }
   }
 
-  // ââ THREAD ââ
+  // ── THREAD ──
   let currentThreadPostId = null;
 
   async function openThread(postId) {
@@ -3032,7 +3032,7 @@
     await loadThread(currentThreadPostId);
   }
 
-  // ââ DELETE ââ
+  // ── DELETE ──
   async function deletePost(postId) {
     if (!confirm('Delete this chombo?')) return;
     await sb.from('posts').delete().eq('id', postId);
@@ -3046,7 +3046,7 @@
     await loadThread(postId);
   }
 
-  // ââ KICK IT OFF ââ
+  // ── KICK IT OFF ──
   boot();
   function loadSettingsPanel() {
     const city = localStorage.getItem('chombo-city') || '';
