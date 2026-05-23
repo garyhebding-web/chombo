@@ -2547,21 +2547,22 @@
     const el = document.getElementById('flights-content');
     if (!el) return;
     try {
-      // Use airplanes.live — free, no key, returns global military + civilian aircraft
-      // Sample a large region to get a global count estimate
-      const r = await fetch('https://api.airplanes.live/v2/point/0/0/500');
-      const data = await r.json();
-      const count = (data.ac || []).length;
-      // Extrapolate: this 500nm circle covers ~2.4M sq mi; total airspace ~200M sq mi
-      // Just show the real count as "aircraft tracked in range"
+      const [laddRes, milRes] = await Promise.all([
+        fetch('https://api.airplanes.live/v2/ladd'),
+        fetch('https://api.airplanes.live/v2/mil')
+      ]);
+      const ladd = await laddRes.json();
+      const mil  = await milRes.json();
+      const civilCount = (ladd.ac || []).length;
+      const milCount   = (mil.ac  || []).length;
+      const total = civilCount + milCount;
       el.innerHTML =
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
-        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--violet);text-shadow:var(--glow-violet);">' + count.toLocaleString() + '</span>' +
-        '<div class="monitor-stat-label">Aircraft Tracked</div></div>' +
-        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--dim);font-size:14px;">LIVE</span>' +
-        '<div class="monitor-stat-label">ADS-B Feed</div></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">' +
+        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--violet);text-shadow:var(--glow-violet);">' + total.toLocaleString() + '</span><div class="monitor-stat-label">Total Tracked</div></div>' +
+        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--cyan);text-shadow:var(--glow-cyan);">' + civilCount.toLocaleString() + '</span><div class="monitor-stat-label">Civil</div></div>' +
+        '<div class="monitor-stat-cell"><span class="monitor-stat-val" style="color:var(--orange);text-shadow:var(--glow-orange);">' + milCount.toLocaleString() + '</span><div class="monitor-stat-label">Military</div></div>' +
         '</div>' +
-        '<div style="font-size:9px;color:var(--dim);margin-top:10px;text-align:right;">Source: airplanes.live · equatorial sample</div>';
+        '<div style="font-size:9px;color:var(--dim);margin-top:10px;text-align:right;">Source: airplanes.live ADS-B feed</div>';
     } catch(e) {
       el.innerHTML = '<div style="font-size:11px;color:var(--dim);text-align:center;padding:8px;">Could not load flight data</div>';
     }
