@@ -303,6 +303,45 @@
     animation: pulse 1.5s ease-in-out infinite; flex-shrink: 0;
   }
 
+  /* ─── PRESENCE PILL (replaces LIVE) ─── */
+  .presence-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px 5px 8px;
+    border-radius: 999px;
+    background: rgba(17,17,36,0.5);
+    border: 1px solid rgba(155,93,229,0.25);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text, #fff);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: default;
+    user-select: none;
+  }
+  .presence-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: -4px;
+  }
+  .presence-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    border: 1.5px solid rgba(17,17,36,0.9);
+    margin-left: -4px;
+  }
+  .presence-dot:first-child { margin-left: 0; }
+  .presence-dot.netsiboj { background: linear-gradient(135deg, #ff2d78, #9b5de5); }
+  .presence-dot.jobisten { background: linear-gradient(135deg, #00e5ff, #6c5ce7); }
+  .presence-dot.louiswills { background: linear-gradient(135deg, #ff7b00, #ff2d78); }
+  .presence-pill #presence-count {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .presence-pill #presence-count.zero { color: var(--dim, rgba(255,255,255,0.45)); }
+  body.jobiscore-mode .presence-pill { background: rgba(20,20,40,0.7); border-color: var(--pink); color: var(--pink); }
+
+
   @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.75); } }
 
   .topbar-avatar {
@@ -1532,11 +1571,32 @@
 
   /* Top bar: subtle gradient border */
   body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .top-bar {
-    background: linear-gradient(180deg, rgba(17,17,36,0.85) 0%, rgba(5,5,16,0.4) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background:
+      linear-gradient(135deg,
+        rgba(254,196,75,0.18) 0%,
+        rgba(247,119,55,0.22) 20%,
+        rgba(220,39,67,0.25) 40%,
+        rgba(204,35,102,0.28) 60%,
+        rgba(188,42,141,0.25) 80%,
+        rgba(131,58,180,0.22) 100%),
+      linear-gradient(180deg, rgba(17,17,36,0.65) 0%, rgba(5,5,16,0.3) 100%);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
     border-bottom: 1px solid transparent;
-    border-image: linear-gradient(90deg, rgba(255,45,120,0.4), rgba(155,93,229,0.5), rgba(0,229,255,0.4)) 1;
+    border-image: linear-gradient(90deg,
+      rgba(254,196,75,0.5),
+      rgba(247,119,55,0.55),
+      rgba(220,39,67,0.6),
+      rgba(188,42,141,0.55),
+      rgba(131,58,180,0.5)) 1;
+    position: relative;
+  }
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .top-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(5,5,16,0.4) 100%);
+    pointer-events: none;
   }
 
   /* Monitor cards: gradient borders + subtle mesh background */
@@ -1545,14 +1605,14 @@
   body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .auth-box,
   body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .stats-card {
     background:
-      linear-gradient(135deg, rgba(255,45,120,0.04) 0%, rgba(155,93,229,0.04) 50%, rgba(0,229,255,0.04) 100%),
-      rgba(17,17,36,0.7);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+      linear-gradient(135deg, rgba(255,45,120,0.05) 0%, rgba(155,93,229,0.05) 50%, rgba(0,229,255,0.05) 100%),
+      rgba(17,17,36,0.35);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
     border: 1px solid rgba(155,93,229,0.18);
     box-shadow:
-      0 4px 24px rgba(0,0,0,0.35),
-      inset 0 1px 0 rgba(255,255,255,0.04);
+      0 4px 24px rgba(0,0,0,0.25),
+      inset 0 1px 0 rgba(255,255,255,0.05);
     position: relative;
   }
 
@@ -1700,7 +1760,7 @@
     <div class="topbar">
       <div class="logo-text">CHOMBO</div>
       <div class="topbar-right">
-        <div class="live-pill"><div class="live-dot"></div>LIVE</div>
+        <div class="presence-pill" id="presence-pill" title="who's chombin' right now"><div class="presence-dots" id="presence-dots"></div><span id="presence-count">0</span></div>
         <div class="topbar-avatar" id="topbar-initial" onclick="switchTab('stats')">?</div>
       </div>
     </div>
@@ -2144,6 +2204,7 @@
     if (likes) likes.forEach(l => myLikes.add(l.post_id));
 
     await loadFeed();
+    startPresence();
     subscribeRealtime();
     if (localStorage.getItem('chombo-piss') === '1') applyPissMode(true);
     switchTab('feed');
@@ -3385,6 +3446,38 @@
     const on = !document.body.classList.contains('jobiscore-mode');
     localStorage.setItem('chombo-jobiscore', on ? '1' : '0');
     applyJobiscoreMode(on);
+  }
+
+
+
+  // ─── PRESENCE TRACKING ───
+  let _presenceChannel = null;
+  function startPresence() {
+    if (!window.sb || !window.currentUser) return;
+    if (_presenceChannel) return;
+    const username = (window.currentUser.username || window.currentUser.email || 'unknown').toLowerCase();
+    _presenceChannel = sb.channel('chombo-presence', { config: { presence: { key: username } } });
+    _presenceChannel
+      .on('presence', { event: 'sync' }, () => {
+        const state = _presenceChannel.presenceState();
+        renderPresence(Object.keys(state));
+      })
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await _presenceChannel.track({ user: username, ts: Date.now() });
+        }
+      });
+  }
+  function renderPresence(users) {
+    const dotsEl = document.getElementById('presence-dots');
+    const countEl = document.getElementById('presence-count');
+    if (!dotsEl || !countEl) return;
+    // Filter to known users
+    const known = ['netsiboj', 'jobisten', 'louiswills'];
+    const present = users.map(u => u.toLowerCase()).filter(u => known.includes(u));
+    dotsEl.innerHTML = present.map(u => '<div class="presence-dot ' + u + '" title="' + u + '"></div>').join('');
+    countEl.textContent = present.length > 0 ? present.length + ' online' : 'solo';
+    countEl.className = present.length === 0 ? 'zero' : '';
   }
 
 </script>
