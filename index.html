@@ -256,9 +256,11 @@
     flex-shrink: 0;
     padding: 12px 18px 10px;
     padding-top: calc(12px + env(safe-area-inset-top, 0px));
-    background: rgba(5,5,15,0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background:
+      linear-gradient(135deg, rgba(254,218,119,0.55) 0%, rgba(245,133,41,0.55) 18%, rgba(221,42,123,0.6) 40%, rgba(129,52,175,0.6) 65%, rgba(81,91,212,0.55) 100%),
+      rgba(5,5,15,0.78);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
     border-bottom: 1px solid rgba(155,48,255,0.35);
     display: flex;
     align-items: center;
@@ -630,7 +632,9 @@
   }
 
   .profile-card {
-    background: rgba(13,13,43,0.7);
+    background: rgba(13,13,43,0.35);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
     border: 1px solid rgba(155,48,255,0.3);
     border-radius: 10px; padding: 20px; margin-bottom: 16px;
     position: relative; overflow: hidden;
@@ -2061,9 +2065,11 @@
       detectSessionInUrl: true,
     }
   });
+  window.sb = sb;
 
   // ── STATE ──
   let currentUser = null;
+  window.currentUser = null;
   let myProfile = null;
   let allProfiles = {};
   let myLikes = new Set();
@@ -2148,7 +2154,7 @@
 
   async function signOut() {
     await sb.auth.signOut();
-    currentUser = null; myProfile = null; allProfiles = {}; myLikes.clear();
+    currentUser = null; window.currentUser = null; myProfile = null; allProfiles = {}; myLikes.clear();
     if (realtimeSub) { sb.removeChannel(realtimeSub); realtimeSub = null; }
     showScreen('auth');
     document.getElementById('auth-form').style.display = 'block';
@@ -2163,7 +2169,7 @@
   async function boot() {
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
-      currentUser = session.user;
+      currentUser = session.user; window.currentUser = currentUser;
       await loadApp();
     } else {
       showScreen('auth');
@@ -2171,7 +2177,7 @@
 
     sb.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        currentUser = session.user;
+        currentUser = session.user; window.currentUser = currentUser;
         await loadApp();
       } else if (event === 'SIGNED_OUT') {
         showScreen('auth');
@@ -3459,6 +3465,14 @@
     _presenceChannel = sb.channel('chombo-presence', { config: { presence: { key: username } } });
     _presenceChannel
       .on('presence', { event: 'sync' }, () => {
+        const state = _presenceChannel.presenceState();
+        renderPresence(Object.keys(state));
+      })
+      .on('presence', { event: 'join' }, () => {
+        const state = _presenceChannel.presenceState();
+        renderPresence(Object.keys(state));
+      })
+      .on('presence', { event: 'leave' }, () => {
         const state = _presenceChannel.presenceState();
         renderPresence(Object.keys(state));
       })
