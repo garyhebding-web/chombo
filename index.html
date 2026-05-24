@@ -2364,11 +2364,12 @@
   function updateProfileUI() {
     if (!myProfile) return;
     const initial = myProfile.username[0].toUpperCase();
-    document.getElementById('topbar-initial').textContent = initial;
-    document.getElementById('compose-avatar').textContent = initial;
-    document.getElementById('profile-avatar-lg').textContent = initial;
-    document.getElementById('profile-name-lg').textContent = myProfile.username.toUpperCase();
-    document.getElementById('profile-handle-lg').textContent = '@' + myProfile.username.toLowerCase();
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('topbar-initial', initial);
+    set('compose-avatar', initial);
+    set('profile-avatar-lg', initial);
+    set('profile-name-lg', myProfile.username.toUpperCase());
+    set('profile-handle-lg', '@' + myProfile.username.toLowerCase());
   }
 
   function updateFriendUI() {
