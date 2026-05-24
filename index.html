@@ -1484,6 +1484,138 @@
   body.jazz-mode .auth-logo { color: #542079; text-shadow: 0 0 20px rgba(84,32,121,0.6); }
   body.jazz-mode .top-bar { border-bottom-color: rgba(0,185,180,0.3); }
 
+
+  /* ════ JOBISCORE (classic synthwave — opt-in via .jobiscore-mode body class) ════ */
+  /* Default body is now Modern Jobis. .jobiscore-mode restores the classic look. */
+  body.jobiscore-mode .bg-aurora { display: none !important; }
+  body.jobiscore-mode .bg-sun,
+  body.jobiscore-mode .bg-grid { display: block !important; }
+
+  /* ════ MODERN JOBIS — DEFAULT ════ */
+  /* Soft Stripe-style animated aurora background, gradient surfaces, subtle depth */
+  .bg-aurora {
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(255,45,120,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(155,93,229,0.28) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 90%, rgba(0,229,255,0.20) 0%, transparent 55%),
+      radial-gradient(ellipse at 10% 80%, rgba(255,123,0,0.18) 0%, transparent 50%),
+      #050510;
+    background-size: 200% 200%;
+    animation: aurora-drift 28s ease-in-out infinite alternate;
+  }
+  @keyframes aurora-drift {
+    0%   { background-position: 0% 0%, 100% 0%, 50% 100%, 0% 100%; }
+    50%  { background-position: 20% 30%, 70% 30%, 30% 70%, 80% 60%; }
+    100% { background-position: 50% 50%, 0% 50%, 70% 30%, 50% 100%; }
+  }
+  /* hide old synthwave bg when in modern jobis */
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .bg-sun,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .bg-grid { display: none; }
+
+  /* Logo: animated gradient text */
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .chombo-logo,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .auth-logo {
+    background: linear-gradient(90deg, #ff2d78, #9b5de5, #00e5ff, #ff2d78);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: gradient-shift 8s linear infinite;
+    text-shadow: none;
+  }
+  @keyframes gradient-shift {
+    0%   { background-position: 0% center; }
+    100% { background-position: 300% center; }
+  }
+
+  /* Top bar: subtle gradient border */
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .top-bar {
+    background: linear-gradient(180deg, rgba(17,17,36,0.85) 0%, rgba(5,5,16,0.4) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(90deg, rgba(255,45,120,0.4), rgba(155,93,229,0.5), rgba(0,229,255,0.4)) 1;
+  }
+
+  /* Monitor cards: gradient borders + subtle mesh background */
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .monitor-card,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .panel-feed .post-card,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .auth-box,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .stats-card {
+    background:
+      linear-gradient(135deg, rgba(255,45,120,0.04) 0%, rgba(155,93,229,0.04) 50%, rgba(0,229,255,0.04) 100%),
+      rgba(17,17,36,0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(155,93,229,0.18);
+    box-shadow:
+      0 4px 24px rgba(0,0,0,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.04);
+    position: relative;
+  }
+
+  /* Stat numbers: gradient text fills */
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .stat-num,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .monitor-stat-val,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .weather-temp,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .aqi-num,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .countdown-num,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .iss-stat-val,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .clock-time {
+    background: linear-gradient(135deg, #ff2d78 0%, #9b5de5 50%, #00e5ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    filter: drop-shadow(0 0 8px rgba(155,93,229,0.3));
+  }
+
+  /* Buttons: stripe-style gradient with hover */
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .auth-btn,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .post-btn,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .save-btn,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .fab {
+    background: linear-gradient(135deg, #ff2d78 0%, #9b5de5 50%, #6c5ce7 100%);
+    background-size: 200% auto;
+    transition: background-position 0.5s ease, transform 0.15s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 14px rgba(155,93,229,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .auth-btn:hover,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .post-btn:hover,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .save-btn:hover,
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .fab:hover {
+    background-position: 100% center;
+    box-shadow: 0 6px 20px rgba(255,45,120,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+  }
+
+  /* Bottom nav: gradient backdrop + gradient active state */
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .bottom-nav {
+    background: linear-gradient(180deg, rgba(5,5,16,0.4) 0%, rgba(17,17,36,0.92) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(155,93,229,0.18);
+  }
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .nav-tab.active svg {
+    stroke: url(#nav-gradient);
+  }
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .nav-tab.active {
+    color: #ff2d78;
+    background: linear-gradient(135deg, rgba(255,45,120,0.12), rgba(155,93,229,0.12) 50%, rgba(0,229,255,0.08));
+  }
+
+  /* Avatars: gradient */
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .avatar[data-user="netsiboj"],
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .avatar.netsiboj {
+    background: linear-gradient(135deg, #ff2d78 0%, #9b5de5 100%);
+  }
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .avatar[data-user="jobisten"],
+  body:not(.jobiscore-mode):not(.piss-mode):not(.jazz-mode) .avatar.jobisten {
+    background: linear-gradient(135deg, #00e5ff 0%, #6c5ce7 100%);
+  }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js"></script>
 <script>
@@ -1514,6 +1646,8 @@
 </script>
 </head>
 <body>
+<div class="bg-aurora"></div>
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="nav-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff2d78"/><stop offset="50%" stop-color="#9b5de5"/><stop offset="100%" stop-color="#00e5ff"/></linearGradient></defs></svg>
 
 <div class="bg-wrap">
   <div class="bg-sun"></div>
@@ -1744,6 +1878,18 @@
         </div>
         <div class="settings-section">
           <div class="settings-section-title">Appearance</div>
+          <div class="settings-row">
+            <div>
+              <div class="settings-label">Jobiscore</div>
+              <div class="settings-sublabel" id="jobiscore-sublabel">Classic synthwave aesthetic</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="piss-toggle-track" id="jobiscore-track" onclick="toggleJobiscoreMode()">
+                <div class="piss-toggle-knob" id="jobiscore-thumb"></div>
+              </div>
+              <span class="piss-label off" id="jobiscore-label">OFF</span>
+            </div>
+          </div>
           <div class="settings-row">
             <div>
               <div class="settings-label">Piss Mode</div>
@@ -3044,7 +3190,7 @@
     showToast('\2713  Location saved — refresh Sit Rep to apply');
   }
   function togglePissMode() {
-    if (!document.body.classList.contains('piss-mode')) { localStorage.setItem('chombo-jazz', '0'); applyJazzMode(false); }
+    if (!document.body.classList.contains('piss-mode')) { localStorage.setItem('chombo-jazz', '0'); applyJazzMode(false); localStorage.setItem('chombo-jobiscore', '0'); applyJobiscoreMode(false); }
     const next = localStorage.getItem('chombo-piss') !== '1';
     localStorage.setItem('chombo-piss', next ? '1' : '0');
     document.body.classList.toggle('piss-mode', next);
@@ -3192,6 +3338,7 @@
 
   function toggleJazzMode() {
     const on = !document.body.classList.contains('jazz-mode');
+    if (on) { localStorage.setItem('chombo-jobiscore', '0'); applyJobiscoreMode(false); }
     localStorage.setItem('chombo-jazz', on ? '1' : '0');
     applyJazzMode(on);
   }
@@ -3205,6 +3352,39 @@
     if (thumb) thumb.style.transform = on ? 'translateX(22px)' : 'translateX(0)';
     if (label) { label.textContent = on ? 'ON' : 'OFF'; label.className = 'piss-label ' + (on ? 'on' : 'off'); }
     if (sub) sub.textContent = on ? 'Golden hour aesthetic' : 'Golden hour aesthetic';
+  }
+
+
+
+  // ─── JOBISCORE MODE (classic synthwave look) ───
+  function applyJobiscoreMode(on) {
+    document.body.classList.toggle('jobiscore-mode', on);
+    if (on) {
+      // Mutually exclusive with piss and jazz
+      document.body.classList.remove('piss-mode');
+      document.body.classList.remove('jazz-mode');
+      localStorage.setItem('chombo-piss', '0');
+      localStorage.setItem('chombo-jazz', '0');
+      if (typeof updatePissModeUI === 'function') updatePissModeUI(false);
+      const jt = document.getElementById('jazz-track');
+      const jth = document.getElementById('jazz-thumb');
+      const jl = document.getElementById('jazz-label');
+      if (jt) jt.classList.toggle('on', false);
+      if (jth) jth.style.transform = 'translateX(0)';
+      if (jl) { jl.textContent = 'OFF'; jl.className = 'piss-label off'; }
+    }
+    const track = document.getElementById('jobiscore-track');
+    const thumb = document.getElementById('jobiscore-thumb');
+    const label = document.getElementById('jobiscore-label');
+    if (track) track.classList.toggle('on', on);
+    if (thumb) thumb.style.transform = on ? 'translateX(22px)' : 'translateX(0)';
+    if (label) { label.textContent = on ? 'ON' : 'OFF'; label.className = 'piss-label ' + (on ? 'on' : 'off'); }
+  }
+
+  function toggleJobiscoreMode() {
+    const on = !document.body.classList.contains('jobiscore-mode');
+    localStorage.setItem('chombo-jobiscore', on ? '1' : '0');
+    applyJobiscoreMode(on);
   }
 
 </script>
