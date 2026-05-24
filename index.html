@@ -1723,10 +1723,13 @@
   #panel-snake {
     padding: 12px 12px 14px;
     padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    display: flex;
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+  }
+  /* When active, .panel.active supplies display:flex; we just ensure our flex setup wins */
+  #panel-snake.active {
+    display: flex;
   }
   .snake-wrap {
     flex: 1;
@@ -1845,27 +1848,41 @@
   }
   .snake-start-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(196,79,245,0.6), 0 0 0 1px rgba(255,255,255,0.12) inset; }
   .snake-start-btn:active { transform: translateY(0); }
-  .snake-controls {
-    display: flex; gap: 8px;
-    width: 100%; max-width: 460px;
-    justify-content: center;
+  .snake-dpad {
+    display: grid;
+    grid-template-columns: 64px 64px 64px;
+    grid-template-rows: 64px 64px 64px;
+    gap: 8px;
     flex-shrink: 0;
+    margin: 2px auto 0;
+    /* center cell stays empty — buttons placed via grid-area */
   }
+  .snake-btn-up    { grid-column: 2; grid-row: 1; }
+  .snake-btn-left  { grid-column: 1; grid-row: 2; }
+  .snake-btn-right { grid-column: 3; grid-row: 2; }
+  .snake-btn-down  { grid-column: 2; grid-row: 3; }
   .snake-btn {
-    flex: 1;
-    max-width: 90px;
-    height: 50px;
-    border-radius: 12px; cursor: pointer;
-    font-size: 18px; color: #fff;
-    background: rgba(13,13,43,0.55);
-    border: 1px solid rgba(155,48,255,0.4);
+    width: 100%; height: 100%;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 22px; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(13,13,43,0.6);
+    border: 1px solid rgba(155,48,255,0.45);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    transition: transform 0.1s ease, background 0.15s ease, border-color 0.15s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: transform 0.08s ease, background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
     -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none; user-select: none;
+    touch-action: manipulation;
   }
-  .snake-btn:hover { background: rgba(155,48,255,0.18); border-color: rgba(155,48,255,0.7); }
-  .snake-btn:active { transform: scale(0.92); background: rgba(155,48,255,0.32); }
+  .snake-btn:active {
+    transform: scale(0.92);
+    background: linear-gradient(135deg, rgba(255,79,138,0.35), rgba(196,79,245,0.35));
+    border-color: rgba(255,79,138,0.7);
+    box-shadow: 0 2px 8px rgba(196,79,245,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
   /* Piss-mode easter egg flash */
   .piss-flash {
     position: absolute; inset: 0;
@@ -2019,11 +2036,11 @@
             </div>
           </div>
 
-          <div class="snake-controls">
-            <button class="snake-btn" data-dir="left" aria-label="left">◀</button>
-            <button class="snake-btn" data-dir="up" aria-label="up">▲</button>
-            <button class="snake-btn" data-dir="down" aria-label="down">▼</button>
-            <button class="snake-btn" data-dir="right" aria-label="right">▶</button>
+          <div class="snake-dpad" role="group" aria-label="direction pad">
+            <button class="snake-btn snake-btn-up"    data-dir="up"    aria-label="up">▲</button>
+            <button class="snake-btn snake-btn-left"  data-dir="left"  aria-label="left">◀</button>
+            <button class="snake-btn snake-btn-right" data-dir="right" aria-label="right">▶</button>
+            <button class="snake-btn snake-btn-down"  data-dir="down"  aria-label="down">▼</button>
           </div>
 
           <div class="snake-hint">swipe board · arrow keys · WASD</div>
