@@ -2376,9 +2376,10 @@
     const friend = Object.values(allProfiles).find(p => p.id !== currentUser.id);
     if (!friend) return;
     const initial = friend.username[0].toUpperCase();
-    document.getElementById('friend-avatar-lg').textContent = initial;
-    document.getElementById('friend-name-lg').textContent = friend.username.toUpperCase();
-    document.getElementById('friend-handle-lg').textContent = '@' + friend.username.toLowerCase();
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('friend-avatar-lg', initial);
+    set('friend-name-lg', friend.username.toUpperCase());
+    set('friend-handle-lg', '@' + friend.username.toLowerCase());
   }
 
   // ── FEED ──
