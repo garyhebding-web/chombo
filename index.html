@@ -2081,6 +2081,32 @@
     flex-shrink: 0;
   }
 
+
+  /* ───── GAME BOARD THEME OVERRIDES ───── */
+  /* Modern Jobis (default) keeps the original purple-tinted dark gradient. */
+  /* Jobiscore matches default — same classic synthwave board. */
+
+  /* Piss mode: amber-tinted dark board */
+  body.piss-mode .snake-board-wrap,
+  body.piss-mode .tetris-board-wrap {
+    background: radial-gradient(ellipse at 50% 50%, rgba(40,30,5,0.85) 0%, rgba(15,10,2,0.95) 100%);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 60px rgba(255,225,53,0.10);
+  }
+
+  /* Jazz mode: teal-tinted dark board */
+  body.jazz-mode .snake-board-wrap,
+  body.jazz-mode .tetris-board-wrap {
+    background: radial-gradient(ellipse at 50% 50%, rgba(8,30,32,0.85) 0%, rgba(5,8,15,0.95) 100%);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 60px rgba(0,185,180,0.10);
+  }
+
+
+  /* Piss-flash sized smaller for narrow tetris board */
+  #piss-flash-tetris {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightstreamer-client-web/lightstreamer.min.js"></script>
 <script>
@@ -2243,6 +2269,7 @@
           <div class="tetris-play-area">
             <div class="tetris-board-wrap">
               <canvas id="tetris-canvas" width="200" height="400"></canvas>
+              <div class="piss-flash" id="piss-flash-tetris"></div>
               <div class="tetris-overlay" id="tetris-overlay">
                 <div class="tetris-overlay-title">CHOMBO TETRIS</div>
                 <div class="tetris-overlay-msg" id="tetris-overlay-msg">stack blocks · clear lines</div>
@@ -4188,6 +4215,11 @@
         score += points;
         lines += cleared;
         level = 1 + Math.floor(lines / 10);
+        // Easter egg: ~25% chance of a piss-flash on any line clear
+        if (Math.random() < 0.25) {
+          const msgs = ["I CAN'T TALK RIGHT NOW", "I'M MAKIN' PISS"];
+          triggerPissFlashTetris(msgs[Math.floor(Math.random() * msgs.length)]);
+        }
       }
       // Spawn next
       current = nextPiece;
@@ -4234,7 +4266,16 @@
       if (!tryMove(0, 1)) { lockPiece(); }
     }
 
-    function dropInterval() {
+    function triggerPissFlashTetris(text) {
+      const el = document.getElementById('piss-flash-tetris');
+      if (!el) return;
+      el.textContent = text;
+      el.classList.remove('flash');
+      void el.offsetWidth;  // force reflow so the animation restarts
+      el.classList.add('flash');
+    }
+
+        function dropInterval() {
       // 800ms at level 1, decreasing
       return Math.max(80, BASE_DROP - (level - 1) * 70);
     }
