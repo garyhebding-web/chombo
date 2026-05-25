@@ -4263,6 +4263,8 @@
           triggerPissFlashTetris(msgs[Math.floor(Math.random() * msgs.length)]);
         }
       }
+      // Render the locked state before spawning next (defensive — ensures locked piece is visible)
+      draw();
       // Spawn next
       current = nextPiece;
       nextPiece = randomPiece();
@@ -4272,6 +4274,7 @@
       }
       updateHud();
       drawNext();
+      draw();
     }
 
     function tryMove(dx, dy) {
@@ -4296,6 +4299,7 @@
       lockPiece();
       dropTimer = 0;
       updateHud();
+      draw();
     }
 
     function softDrop() {
