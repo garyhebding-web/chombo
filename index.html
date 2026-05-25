@@ -3542,7 +3542,7 @@
 
     function placeFood() {
       while (true) {
-        const f = { x: Math.floor(Math.random() * GRID), y: Math.floor(Math.random() * GRID), isPiss: Math.random() < 0.08 };
+        const f = { x: Math.floor(Math.random() * GRID), y: Math.floor(Math.random() * GRID), isPiss: Math.random() < 0.12 };
         if (!snake.some(s => s.x === f.x && s.y === f.y)) { food = f; return; }
       }
     }
@@ -3583,8 +3583,8 @@
           best = score;
           localStorage.setItem('chombo-snake-best', best);
         }
-        // Speed up every 7 points, cap at 4 (avoids unplayable late-game)
-        speed = Math.min(4, 1 + Math.floor(score / 7));
+        // Speed up every 9 points, cap at 3 (smooth late-game pace)
+        speed = Math.min(3, 1 + Math.floor(score / 9));
         placeFood();
         updateHud();
       } else if (pendingGrowth > 0) {
@@ -3639,22 +3639,20 @@
         }
       }
 
-      // Snake — gradient body, brighter head
+      // Snake — gradient body (pink head → bright cyan tail), outlined for contrast
       for (let i = snake.length - 1; i >= 0; i--) {
         const seg = snake[i];
         const x = seg.x * cellSize, y = seg.y * cellSize;
         const t = i / Math.max(1, snake.length - 1);
-        // Gradient from pink (head, t=0) to indigo (tail, t=1)
-        const headColor = [255, 79, 138];
-        const tailColor = [81, 91, 212];
+        const headColor = [255, 90, 160];
+        const tailColor = [80, 220, 240];
         const r = Math.round(headColor[0] + (tailColor[0] - headColor[0]) * t);
         const g = Math.round(headColor[1] + (tailColor[1] - headColor[1]) * t);
         const b = Math.round(headColor[2] + (tailColor[2] - headColor[2]) * t);
-        const pad = cellSize * 0.12;
-        const radius = cellSize * 0.22;
-        c.fillStyle = `rgb(${r},${g},${b})`;
-        // Rounded rect
+        const pad = cellSize * 0.10;
+        const radius = cellSize * 0.24;
         const rx = x + pad, ry = y + pad, rw = cellSize - pad*2, rh = cellSize - pad*2;
+        // Dark outline for contrast against the board
         c.beginPath();
         c.moveTo(rx + radius, ry);
         c.arcTo(rx + rw, ry, rx + rw, ry + rh, radius);
@@ -3662,12 +3660,36 @@
         c.arcTo(rx, ry + rh, rx, ry, radius);
         c.arcTo(rx, ry, rx + rw, ry, radius);
         c.closePath();
+        c.fillStyle = 'rgba(5,5,15,0.55)';
         c.fill();
-        // Head highlight
+        // Inset main fill
+        const inset = Math.max(1, cellSize * 0.06);
+        const irx = rx + inset, iry = ry + inset;
+        const irw = rw - inset*2, irh = rh - inset*2;
+        const iRadius = Math.max(2, radius - inset);
+        c.beginPath();
+        c.moveTo(irx + iRadius, iry);
+        c.arcTo(irx + irw, iry, irx + irw, iry + irh, iRadius);
+        c.arcTo(irx + irw, iry + irh, irx, iry + irh, iRadius);
+        c.arcTo(irx, iry + irh, irx, iry, iRadius);
+        c.arcTo(irx, iry, irx + irw, iry, iRadius);
+        c.closePath();
+        c.fillStyle = `rgb(${r},${g},${b})`;
+        c.fill();
+        // Subtle top-edge highlight
+        c.fillStyle = 'rgba(255,255,255,0.18)';
+        c.fillRect(irx + iRadius * 0.5, iry, irw - iRadius, Math.max(1, cellSize * 0.06));
+        // Head — bigger highlight + soft glow
         if (i === 0) {
-          c.fillStyle = 'rgba(255,255,255,0.45)';
+          const cx = x + cellSize/2, cy = y + cellSize/2;
+          const glow = c.createRadialGradient(cx, cy, 0, cx, cy, cellSize * 0.6);
+          glow.addColorStop(0, 'rgba(255,150,200,0.45)');
+          glow.addColorStop(1, 'rgba(255,150,200,0)');
+          c.fillStyle = glow;
+          c.fillRect(x - cellSize*0.3, y - cellSize*0.3, cellSize*1.6, cellSize*1.6);
+          c.fillStyle = 'rgba(255,255,255,0.7)';
           c.beginPath();
-          c.arc(x + cellSize/2, y + cellSize/2, cellSize * 0.12, 0, Math.PI*2);
+          c.arc(cx, cy, cellSize * 0.14, 0, Math.PI*2);
           c.fill();
         }
       }
