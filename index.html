@@ -1954,16 +1954,18 @@
     text-shadow: 0 0 18px rgba(196,79,245,0.35);
   }
   .tetris-play-area {
-    flex: 1;
+    flex: 1 1 auto;
     display: flex;
     gap: 10px;
-    align-items: stretch;
+    align-items: flex-start;
+    justify-content: center;
     min-height: 0;
     width: 100%; max-width: 460px;
   }
   .tetris-board-wrap {
     position: relative;
-    flex: 0 1 auto;
+    flex: 0 0 auto;
+    width: min(220px, calc(100% - 100px));
     aspect-ratio: 1 / 2;
     max-height: 100%;
     border-radius: 12px; overflow: hidden;
@@ -1998,7 +2000,9 @@
     border-radius: 10px;
     background: rgba(13,13,43,0.45);
     border: 1px solid rgba(155,48,255,0.3);
-    min-width: 84px;
+    flex: 0 0 auto;
+    width: 84px;
+    align-self: flex-start;
   }
   .tetris-next-label {
     font-family: 'Orbitron', sans-serif; font-size: 9px;
