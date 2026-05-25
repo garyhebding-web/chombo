@@ -2244,7 +2244,7 @@
             <circle cx="20" cy="22" r="14" fill="url(#sun-grad)" mask="url(#sun-mask)"/>
           </svg>
         </div>
-        <a class="topbar-avatar" id="topbar-initial" href="https://petittube.com/" target="_blank" rel="noopener noreferrer" aria-label="random youtube video">?</a>
+        <a class="topbar-avatar" id="topbar-initial" href="#" onclick="event.preventDefault(); window.open(randomChombVideo(), '_blank', 'noopener,noreferrer'); return false;" aria-label="random youtube video">?</a>
       </div>
     </div>
 
@@ -2489,7 +2489,7 @@
             </div>
           </div>
         </div>
-      <a class="rando-btn" href="https://petittube.com/" target="_blank" rel="noopener noreferrer">TAKE ME SOMEWHERE</a>
+      <a class="rando-btn" href="#" onclick="event.preventDefault(); window.open(randomChombVideo(), '_blank', 'noopener,noreferrer'); return false;">TAKE ME SOMEWHERE</a>
       <a class="chombin-btn" href="https://www.youtube.com/watch?v=-Zyt2xlLf-E" target="_blank" rel="noopener">It's chombin' time</a>
       </div>
       </div><!-- /main-col -->
@@ -2928,6 +2928,14 @@
   }
 
   // ── TABS ──
+  // ───── Random YouTube video picker for ? button + TAKE ME SOMEWHERE ─────
+  const _CHOMB_VIDEOS = ["dQw4w9WgXcQ","djV11Xbc914","L_jWHffIx5E","iwGFalTRHDA","wPVbtIuT9Sg","EwTZ2xpQwpA","EIyixC9NsLI","1QZwSf3HKuc","z9Uz1icjwrM","y6120QOlsfU","tVj0ZTS4WF4","ZZ5LpwO-An4","RubBzkZzpUA","9bZkp7q19f0","kfVsfOSbJY0","PIb6AZdTr-A","fJ9rUzIMcZQ","djpDjqqgfTI","M3iOROuTuMA","PpccpglnNf0","SRvCvsRp5ho","Tx1XIm6q4r4","KzN7tHc7DHQ","DkmiI7C4qd0","RfYHrSlKDhE","ZHO3GMnZqr4","PSFm1ZxXffk","8gXNuPo3i7w","63dRtAW9qWY","kAG39jKi0lI","MXJEzG4-eEU","Q5im0Ssyyus","CsGYh8AacKY","0bWuwiAfeNE","S5yEvkO-1QU","Hv6RbEOlqRo","yt7QSHEAfGc","OVL_BAJtL_w","rJzVURNUmh4","MwwBpZQOTUE","5tho6_4uPjg","9Gj47G2e1Jc","0E00Zuayv9Q","PEGccV-NOm8","VBlFHuCzPgY","F8e9JEa6esw","QH2-TGUlwu4","wZZ7oFKsKzY","Tt7bzxurJ1I","y8Kyi0WNg40","fbGkxcY7YFU","qybUFnY7Y8w","MejbOFk7H6c","JV7l49lWFhM","ZyhrYis509A","5anLPw0Efmo","9deQ6L5IsZE","iik25wqIuFo","djpDjqqgfTI","yzC4hFK5P3g","tD4HCZe-tew","fzMue3sqAVk","MtN1YnoL46Q","VFCpZ7HPSY8","M00YOoouXLE","_GFKWa17gAQ","QmCJ2lyP3Y8","I3lDQqEPGuY","rcl5fmuVH4o","Hyy0eYz_yEY","EzNhaLUT520","ZS-e7e7AfTM","P3ALwKeSEYs","VPnsbHcZ_aQ","RDrfE9I8_hs","lj3iNxZ8Dww","_9wRijWzhqU","FavUpD_IjVY","0tdyU_gW6WE","QrGrOK8oZG8","9hE5-98ZeCg","xuCn8ux2gbs","ygI-2F8ApUM","LACbVhgtx9I","k85mRPqvMbE","Y9NZL_DotHo","rwsuXHA7RA0","hT_nvWreIhg","1uwOL4rB-go","uelHwf8o7_U","YkADj0TPrJA","papuvlVeZg8","ru0K8uYEZWw","ktvTqknDobU","QcIy9NiNbmo","60ItHLz5WEA","kJQP7kiw5Fk","JGwWNGJdvx8","RgKAFK5djSk","JRfuAukYTKg","lp-EO5I60KA","OPf0YbXqDm0","fLexgOxsZu0","yKNxeF4KMsY","VbfpW0pbvaU","1k8craCGpgs","n4RjJKxsamQ","rYEDA3JcQqw","fLeJJPxua3E","MtN1YnoL46Q","epUk3T2Kfno","CSvFpBOe8eY","kXYiU_JCYtU","TJAfLE39ZZ8","8UVNT4wvIGY","fJ9rUzIMcZA","rY0WxgSXdEE","QkF3oxziUI4","btPJPFnesV4","DyDfgMOUjCI","tAGnKpE4NCI","uelHwf8o7_U","YQHsXMglC9A","9bZkp7q19f0","1Bix44C1EzY","kfchvCyHmsc","JngWPmL_uNk","qRuNxHqwazs","U7mPqycQ0tQ","CMNry4PE93Y","5dsGWM5XGdg","MtjyzlMpsJ8","GLpW4dXWHj0","WqAcXAtpQ-c","yzLT6_TQmq8","umDr0mPuyQc","EFOFR6JCmf4","kOkQ4T5WO9E","djA5oOTV9Gc","EpJK_QGpzv8","FTQbiNvZqaY","I_izvAbhExY","9jK-NcRmVcw","BBAtAM7vtgc","qeMFqkcPYcg","FGBhQbmPwH8","PXYeARRyDWk","GxBSyx85Kp8","0DqJgVZRcQI","dX3k_QDnzHE","fHsa9DqmId8","U_lcUJgQ-pQ","EAJP3uvJ4VI","g6dRtcHnTH8","9C_HReR_McQ","LJ_PdL81C20","ngQyqIfm5lE","yWO-cvGETRQ","AwGsClRgY54","MtN1YnoL46Q","Cf4LRTPRZGg","GoXOiQbT6KU","kZRE7HIO3vM","qEV9qoup2mQ","rStL7niR7gs","i8ju_10NkGY","lCSrPjt-MDc","FAahvgz72LI","Y5yzbDIBdpk","0jXTBAGv9ZQ","yfQ1uNTtSp4","94mhCxAr5W4","vBkBS4O3yvY","vTH-1ezI3iE","MhDDKKt2cI8","8jPQjjsBbIc","BROWqjuTM0g","8oFvNStdMcw","JCQuM10kVE0","EeUI6XOdfHo","Tt-9oqOlEPI","Cu5Ya0KhBYY","ohlcKnEKAjk","AlnVHbZk9bQ","QRS8MkLhQmM","iNzrwh2Z2hQ","z5otkHqAfQA","i6V63zr-eVM","uA0wxe4z62I","h_D3VFfhvs4","PIb6AZdTr-A","1y6smkh6c-0","ovsmGnZ65JM","y6Sxv-sUYtM","OQSNhk5ICTI","WhwbxEfy7fg","Cf-aMr1nGSw","S__VOg0d8F8","qpglXY1u0Mg","tYa6OLQHrEc","Pubd-spHN-0","txqiwrbYGrs"];
+  window.randomChombVideo = function() {
+    const pool = _CHOMB_VIDEOS;
+    const id = pool[Math.floor(Math.random() * pool.length)];
+    return 'https://www.youtube.com/watch?v=' + id;
+  };
+
   function switchTab(tab) {
     if (tab !== 'snake'  && typeof stopSnake  === 'function') stopSnake();
     if (tab !== 'tetris' && typeof stopTetris === 'function') stopTetris();
