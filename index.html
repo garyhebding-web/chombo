@@ -306,42 +306,6 @@
   }
 
   /* ─── PRESENCE PILL (replaces LIVE) ─── */
-  .presence-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 10px 5px 8px;
-    border-radius: 999px;
-    background: rgba(17,17,36,0.5);
-    border: 1px solid rgba(155,93,229,0.25);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--text, #fff);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    cursor: default;
-    user-select: none;
-  }
-  .presence-dots {
-    display: inline-flex;
-    align-items: center;
-    gap: -4px;
-  }
-  .presence-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    border: 1.5px solid rgba(17,17,36,0.9);
-    margin-left: -4px;
-  }
-  .presence-dot:first-child { margin-left: 0; }
-  .presence-dot.netsiboj { background: linear-gradient(135deg, #ff2d78, #9b5de5); }
-  .presence-dot.jobisten { background: linear-gradient(135deg, #00e5ff, #6c5ce7); }
-  .presence-dot.louiswills { background: linear-gradient(135deg, #ff7b00, #ff2d78); }
-  .presence-pill #presence-count {
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-  .presence-pill #presence-count.zero { color: var(--dim, rgba(255,255,255,0.45)); }
-  body.jobiscore-mode .presence-pill { background: rgba(20,20,40,0.7); border-color: var(--pink); color: var(--pink); }
 
 
   @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.75); } }
@@ -2693,16 +2657,18 @@
     sb.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session) {
         currentUser = session.user; window.currentUser = currentUser;
-        await loadApp();
+        if (!window._chomboLoaded) await loadApp();
       } else if (event === 'SIGNED_OUT') {
+        window._chomboLoaded = false;
         showScreen('auth');
       }
     });
   }
 
   async function loadApp() {
+    window._chomboLoaded = true;
     showScreen('app');
-    document.getElementById('fab').style.display = 'flex';
+    document.getElementById('fab').style.display = (window._activeTab || 'feed') === 'feed' ? 'flex' : 'none';
 
     // Load profiles
     const { data: profiles } = await sb.from('profiles').select('*');
@@ -2725,7 +2691,6 @@
     if (likes) likes.forEach(l => myLikes.add(l.post_id));
 
     await loadFeed();
-    startPresence();
     subscribeRealtime();
     if (localStorage.getItem('chombo-piss') === '1') applyPissMode(true);
     switchTab('feed');
@@ -2937,6 +2902,7 @@
   };
 
   function switchTab(tab) {
+    window._activeTab = tab;
     if (tab !== 'snake'  && typeof stopSnake  === 'function') stopSnake();
     if (tab !== 'tetris' && typeof stopTetris === 'function') stopTetris();
     ['feed','snake','tetris','monitor','settings'].forEach(t => {
@@ -2956,6 +2922,7 @@
       document.getElementById('unread-dot').classList.remove('visible');
     }
     if (tab === 'monitor') { loadMonitor(); loadDoomsday(); if(!window._doomInterval) window._doomInterval = setInterval(loadDoomsday, 60000); }
+    else if (window._doomInterval) { clearInterval(window._doomInterval); window._doomInterval = null; }
   }
 
   // ── SCREENS ──
@@ -4095,6 +4062,10 @@
       setTimeout(() => { getCtx(); draw(); }, 50);
     };
 
+    window.addEventListener('resize', () => {
+      if (snake.length || food) { try { draw(); } catch(e) {} }
+    });
+
     window.stopSnake = function() {
       running = false;
       cancelAnimationFrame(loopHandle);
@@ -4103,8 +4074,6 @@
     window.toggleSnakePause = function() {
       if (!running) return;
       paused = !paused;
-      const btn = document.getElementById('snake-pause-btn');
-      if (btn) btn.textContent = paused ? '▶' : '❚❚';
       if (!paused) lastTick = performance.now();
     };
 
@@ -4420,7 +4389,7 @@
       const msg = document.getElementById('tetris-overlay-msg');
       const btn = document.getElementById('tetris-start-btn');
       if (overlay) overlay.classList.remove('hidden');
-      if (msg) msg.textContent = 'game over — score ' + score + ' (' + lines + ' lines)';
+      if (msg) msg.textContent = 'game over — score ' + score + ' · ' + lines + ' lines' + (score === best && score > 0 ? ' · new best!' : '');
       if (btn) btn.textContent = 'PLAY AGAIN';
     }
 
@@ -4478,6 +4447,11 @@
       running = false;
       cancelAnimationFrame(rafHandle);
     };
+
+    window.addEventListener('resize', () => {
+      if (!board.length) return;
+      if (ensureCanvas()) draw();
+    });
 
     function initBoard() {
       board = emptyBoard();
@@ -4670,43 +4644,6 @@
 
 
 
-  // ─── PRESENCE TRACKING ───
-  let _presenceChannel = null;
-  function startPresence() {
-    if (!window.sb || !window.currentUser) return;
-    if (_presenceChannel) return;
-    const username = (window.currentUser.username || window.currentUser.email || 'unknown').toLowerCase();
-    _presenceChannel = sb.channel('chombo-presence', { config: { presence: { key: username } } });
-    _presenceChannel
-      .on('presence', { event: 'sync' }, () => {
-        const state = _presenceChannel.presenceState();
-        renderPresence(Object.keys(state));
-      })
-      .on('presence', { event: 'join' }, () => {
-        const state = _presenceChannel.presenceState();
-        renderPresence(Object.keys(state));
-      })
-      .on('presence', { event: 'leave' }, () => {
-        const state = _presenceChannel.presenceState();
-        renderPresence(Object.keys(state));
-      })
-      .subscribe(async (status) => {
-        if (status === 'SUBSCRIBED') {
-          await _presenceChannel.track({ user: username, ts: Date.now() });
-        }
-      });
-  }
-  function renderPresence(users) {
-    const dotsEl = document.getElementById('presence-dots');
-    const countEl = document.getElementById('presence-count');
-    if (!dotsEl || !countEl) return;
-    // Filter to known users
-    const known = ['netsiboj', 'jobisten', 'louiswills'];
-    const present = users.map(u => u.toLowerCase()).filter(u => known.includes(u));
-    dotsEl.innerHTML = present.map(u => '<div class="presence-dot ' + u + '" title="' + u + '"></div>').join('');
-    countEl.textContent = present.length > 0 ? present.length + ' online' : 'solo';
-    countEl.className = present.length === 0 ? 'zero' : '';
-  }
 
 </script>
 </body>
